@@ -179,7 +179,7 @@ const Home = () => {
             isSidebarOpen ? 'w-64' : 'w-16',
             isMobileSidebarOpen
               ? 'fixed top-14 left-0 h-full flex '
-              : 'fixed top-14 -left-64 h-full flex ',
+              : 'fixed top-14 -left-64 md:left-0 h-full flex ',
           )}
         >
           <button
