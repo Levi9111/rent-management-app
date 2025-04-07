@@ -1,32 +1,49 @@
-import { Request, RequestHandler, Response } from 'express';
 import { UniteServices } from './unit.service';
+import { catchAsync } from '../../utils/catrchAsync';
 
-const createUnit = async (req: Request, res: Response) => {
-  try {
-    const result = await UniteServices.createUnitIntoDB(req.body);
+const createUnit = catchAsync(async (req, res) => {
+  const result = await UniteServices.createUnitIntoDB(req.body);
 
-    return res.status(200).json({
-      statusCode: 200,
-      success: true,
-      message: 'Unit created successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.error('Error creating unit:', error);
-    return res.status(500).json({
-      statusCode: 500,
-      success: false,
-      message: 'Failed to create unit',
-      error: error.message,
-    });
-  }
-};
+  res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: 'Unit created successfully',
+    data: result,
+  });
+});
 
-const updateUnit = async (req, res): RequestHandler => {};
+const updateUnit = catchAsync(async (req, res) => {
+  const result = await UniteServices.updateUnitIntoDB(req.params.id, req.body);
 
-const getAllUnits = async (req, res): RequestHandler => {};
+  res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: 'Unit updated successfully',
+    data: result,
+  });
+});
 
-const getSingleUnit = async (req, res): RequestHandler => {};
+const getAllUnits = catchAsync(async (req, res) => {
+  const result = await UniteServices.getAllUnitsFromDB();
+
+  res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: 'All Units fetched successfully',
+    data: result,
+  });
+});
+
+const getSingleUnit = catchAsync(async (req, res) => {
+  const result = await UniteServices.getSingleUnitFromDB(req.params.id);
+
+  res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: 'Unit fetched successfully',
+    data: result,
+  });
+});
 
 export const UnitControllers = {
   createUnit,
