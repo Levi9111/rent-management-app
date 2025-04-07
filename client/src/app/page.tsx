@@ -9,10 +9,8 @@ import {
   Send,
   Settings,
   PlusCircle,
-  History as HistoryIcon,
   LayoutDashboard,
   Users,
-  LogOut,
 } from 'lucide-react';
 import Image from 'next/image';
 import { RefObject } from 'react';
@@ -20,6 +18,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 import logo from '../../public/pv-logo.png';
 import { cn } from '@/lib/utils';
+import { useContextData } from '@/ContextProvider/Provider';
 
 const Receipt = ({
   receiptRef,
@@ -107,9 +106,9 @@ const Receipt = ({
 };
 
 const Home = () => {
+  const { isMobileSidebarOpen } = useContextData();
   const receiptRef = useRef<HTMLDivElement>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const handleDownloadPDF = async () => {
     if (receiptRef.current) {
@@ -137,37 +136,6 @@ const Home = () => {
   return (
     <div className='flex flex-col min-h-screen bg-gray-200 '>
       {/* Navbar */}
-      <nav className='fixed top-0 left-0 w-full bg-blue-700 text-white shadow-md z-50 h-14 flex items-center justify-between px-4 md:px-6'>
-        <div className='flex items-center gap-3'>
-          <Menu
-            size={24}
-            className='cursor-pointer lg:hidden'
-            onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-          />
-          <span className='font-bold text-lg'>Patwari Villa</span>
-        </div>
-
-        <div className='hidden md:flex items-center gap-3 text-sm'>
-          <button className='flex items-center gap-1 hover:text-gray-200'>
-            <PlusCircle size={18} /> Create
-          </button>
-          <button className='flex items-center gap-1 hover:text-gray-200'>
-            <HistoryIcon size={18} /> History
-          </button>
-          <button className='flex items-center gap-1 hover:text-gray-200'>
-            <LayoutDashboard size={18} /> Dashboard
-          </button>
-          <button className='flex items-center gap-1 hover:text-gray-200'>
-            <Users size={18} /> Tenants
-          </button>
-          <button className='flex items-center gap-1 hover:text-gray-200'>
-            <Settings size={18} /> Settings
-          </button>
-          <button className='flex items-center gap-1 hover:text-gray-200'>
-            <LogOut size={18} /> Logout
-          </button>
-        </div>
-      </nav>
 
       <div className='flex flex-1 mt-14'>
         {/* Sidebar for Desktop */}

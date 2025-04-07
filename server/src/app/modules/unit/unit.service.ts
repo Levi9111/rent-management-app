@@ -20,7 +20,7 @@ const updateUnitIntoDB = async (id: string, payload: Partial<TUnit>) => {
 };
 
 const getAllUnitsFromDB = async () => {
-  const result = await Unit.find({}).populate('currentTenant');
+  const result = await Unit.find().populate('currentTenant');
   return result;
 };
 

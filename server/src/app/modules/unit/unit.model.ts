@@ -26,6 +26,7 @@ const unitSchema = new Schema<TUnit>(
     },
     others: {
       type: Number,
+      default: 0,
       required: true,
     },
   },

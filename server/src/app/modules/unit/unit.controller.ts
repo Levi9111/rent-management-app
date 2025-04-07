@@ -2,7 +2,7 @@ import { UniteServices } from './unit.service';
 import { catchAsync } from '../../utils/catrchAsync';
 
 const createUnit = catchAsync(async (req, res) => {
-  const result = await UniteServices.createUnitIntoDB(req.body);
+  const result = await UniteServices.createUnitIntoDB(req.body.unit);
 
   res.status(200).json({
     statusCode: 200,
