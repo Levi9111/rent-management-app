@@ -24,7 +24,7 @@ const updateUnit = catchAsync(async (req, res) => {
 });
 
 const getAllUnits = catchAsync(async (req, res) => {
-  const result = await UniteServices.getAllUnitsFromDB();
+  const result = await UniteServices.getAllUnitsFromDB(req.query);
 
   res.status(200).json({
     statusCode: 200,

@@ -15,7 +15,7 @@ const createTenant = catchAsync(async (req, res) => {
 const updateTenant = catchAsync(async (req, res) => {
   const result = await TenantServices.updateTenantIntoDB(
     req.params.id,
-    req.body,
+    req.body.tenant,
   );
 
   res.status(200).json({
@@ -37,6 +37,17 @@ const getAllTenants = catchAsync(async (req, res) => {
   });
 });
 
+const getCurrentTenants = catchAsync(async (req, res) => {
+  const result = await TenantServices.getCurrentTenantFromDB();
+
+  res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: 'All Current Tenants fetched successfully',
+    data: result,
+  });
+});
+
 const getSingleTenant = catchAsync(async (req, res) => {
   const result = await TenantServices.getSingleTenantFromDB(req.params.id);
 
@@ -52,5 +63,6 @@ export const TenantControllers = {
   createTenant,
   updateTenant,
   getAllTenants,
+  getCurrentTenants,
   getSingleTenant,
 };

@@ -24,6 +24,14 @@ const tenantSchema = new Schema<TTenant>(
       type: Date,
       default: null,
     },
+    rentedUnit: {
+      type: Schema.Types.ObjectId,
+      ref: 'Unit',
+    },
+    advancedAmount: {
+      type: Number,
+      default: 0,
+    },
     status: {
       type: String,
       enum: ['current', 'former'],

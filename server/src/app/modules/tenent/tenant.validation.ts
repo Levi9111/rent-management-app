@@ -18,6 +18,14 @@ const createTenantValidationSchema = z.object({
         .refine((date) => !date || !isNaN(Date.parse(date)), {
           message: 'Invalid date format',
         }),
+      rentedUnit: z.string(),
+      advancedAmount: z
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Advanced amount must be a number',
+        })
+        .transform((value) => Number(value)),
+
       status: z.enum(['current', 'former']).optional(),
     }),
   }),
@@ -47,6 +55,13 @@ const updateTenantValidationSchema = z.object({
         .refine((date) => !date || !isNaN(Date.parse(date)), {
           message: 'Invalid date format',
         })
+        .optional(),
+      advancedAmount: z
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Advanced amount must be a number',
+        })
+        .transform((value) => Number(value))
         .optional(),
       status: z.enum(['current', 'former']).optional(),
     }),

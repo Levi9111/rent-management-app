@@ -25,19 +25,22 @@ export const getDataFromDB = async (url: string) => {
   return data;
 };
 
+// Todo: add a logic in the server to handle the numeric values that are converter into string
 export const postToDB = async (
   url: string,
   payload: Record<string, unknown> | FormData,
 ) => {
+  const body = payload instanceof FormData ? payload : JSON.stringify(payload);
   const response = await fetch(url, {
     method: 'POST',
-    body: payload instanceof FormData ? payload : JSON.stringify(payload),
+    body,
     headers:
       payload instanceof FormData
         ? undefined
         : { 'Content-Type': 'application/json' },
   });
 
+  console.log(body);
   const result = await response.json();
 
   return result;

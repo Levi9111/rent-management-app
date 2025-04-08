@@ -1,3 +1,4 @@
+import QueryBuilder from '../../builder/QueryBuilder';
 import { TUnit } from './unit.interface';
 import Unit from './unit.model';
 
@@ -19,13 +20,21 @@ const updateUnitIntoDB = async (id: string, payload: Partial<TUnit>) => {
   return result;
 };
 
-const getAllUnitsFromDB = async () => {
-  const result = await Unit.find().populate('currentTenant');
+const getAllUnitsFromDB = async (query: Record<string, unknown>) => {
+  const unitQuery = new QueryBuilder(Unit.find(), query)
+    .search([''])
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+
+  const result = await unitQuery.modelQuery;
+
   return result;
 };
 
 const getSingleUnitFromDB = async (id: string) => {
-  const result = await Unit.findOne({ _id: id }).populate('currentTenant');
+  const result = await Unit.findOne({ _id: id });
 
   return result;
 };

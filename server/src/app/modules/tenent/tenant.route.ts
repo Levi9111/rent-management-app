@@ -7,6 +7,8 @@ const router = Router();
 
 router.get('/', TenantControllers.getAllTenants);
 
+router.get('/current', TenantControllers.getCurrentTenants);
+
 router.get('/:id', TenantControllers.getSingleTenant);
 
 router.post(

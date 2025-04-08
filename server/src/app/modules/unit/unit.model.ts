@@ -7,11 +7,7 @@ const unitSchema = new Schema<TUnit>(
       type: String,
       required: true,
     },
-    currentTenant: {
-      type: Schema.Types.ObjectId,
-      ref: 'Tenant',
-      default: null,
-    },
+
     monthlyRent: {
       type: Number,
       required: true,
@@ -28,6 +24,10 @@ const unitSchema = new Schema<TUnit>(
       type: Number,
       default: 0,
       required: true,
+    },
+    occupied: {
+      type: Boolean,
+      default: false,
     },
   },
   {

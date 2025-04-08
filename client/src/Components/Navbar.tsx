@@ -21,7 +21,9 @@ const Navbar = () => {
           className='cursor-pointer lg:hidden'
           onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
         />
-        <span className='font-bold text-lg'>Patwari Villa</span>
+        <Link href='/' className='font-bold text-lg'>
+          Patwari Villa
+        </Link>
       </div>
 
       <div className='hidden md:flex items-center gap-3 text-sm'>
