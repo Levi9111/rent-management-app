@@ -6,19 +6,20 @@ import { useContextData } from '@/ContextProvider/Provider';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { User, Calendar, Phone, Mail, Home, Clock } from 'lucide-react';
+import { Tenant } from '@/interfaces/interface';
 
 const History = () => {
   const { base_url } = useContextData();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<Tenant[] | []>([]);
 
   useEffect(() => {
     const fetchTenants = async () => {
       const result = await getDataFromDB(`${base_url}/tenant`);
 
       if (result?.success) {
-        const sortedData = result.data.sort((a: any, b: any) =>
-          a.name.localeCompare(b.name),
+        const sortedData = (result.data as Tenant[]).sort(
+          (a: Tenant, b: Tenant) => a.name.localeCompare(b.name),
         );
         setData(sortedData);
         setLoading(false);
@@ -61,7 +62,7 @@ const History = () => {
     tenants,
     isCurrent,
   }: {
-    tenants: any[];
+    tenants: Tenant[];
     isCurrent: boolean;
   }) => (
     <div className='overflow-x-auto'>
@@ -94,7 +95,7 @@ const History = () => {
           </tr>
         </thead>
         <tbody>
-          {tenants.map((tenant: any, index: number) => (
+          {tenants.map((tenant: Tenant, index: number) => (
             <tr
               key={tenant._id}
               className={`bg-white border-b transition duration-300 ease-in-out hover:bg-gray-50 ${
@@ -116,11 +117,19 @@ const History = () => {
                 {tenant.rentedUnit?.name || 'N/A'}
               </td>
               <td className='py-3 px-6 text-left'>
-                {new Date(tenant.rentStartDate).toLocaleDateString()}
+                {new Date(tenant.rentStartDate).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
               </td>
               <td className='py-3 px-6 text-left'>
                 {tenant.rentEndDate
-                  ? new Date(tenant.rentEndDate).toLocaleDateString()
+                  ? new Date(tenant.rentEndDate).toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })
                   : isCurrent
                   ? 'Ongoing'
                   : 'N/A'}
@@ -128,7 +137,7 @@ const History = () => {
               <td className='py-3 px-6 text-left'>
                 {calculateStayDuration(
                   tenant.rentStartDate,
-                  tenant.rentEndDate,
+                  tenant.rentEndDate!,
                 )}
               </td>
               <td className='py-3 px-6 text-left'>
@@ -162,7 +171,9 @@ const History = () => {
             <User className='h-6 w-6' /> Current Tenants
           </h3>
           <TenantTable
-            tenants={data.filter((tenant: any) => tenant.status === 'current')}
+            tenants={data.filter(
+              (tenant: Tenant) => tenant.status === 'current',
+            )}
             isCurrent
           />
         </div>
@@ -173,7 +184,9 @@ const History = () => {
             <User className='h-6 w-6' /> Former Tenants
           </h3>
           <TenantTable
-            tenants={data.filter((tenant: any) => tenant.status === 'former')}
+            tenants={data.filter(
+              (tenant: Tenant) => tenant.status === 'former',
+            )}
             isCurrent={false}
           />
         </div>

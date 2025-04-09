@@ -1,6 +1,6 @@
 export interface Tenant {
   _id: string;
-  name?: string;
+  name: string;
   phoneNumber: string;
   email: string;
   rentStartDate: string;
