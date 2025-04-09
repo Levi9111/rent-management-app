@@ -1,11 +1,9 @@
+'use client';
 import Image from 'next/image';
-import { RefObject } from 'react';
 import logo from '../../public/pv-logo.png';
-const Receipt = ({
-  receiptRef,
-}: {
-  receiptRef: RefObject<HTMLDivElement | null>;
-}) => {
+import { useContextData } from '@/ContextProvider/Provider';
+const Receipt = () => {
+  const { receiptRef } = useContextData();
   return (
     <div
       ref={receiptRef}
