@@ -25,7 +25,6 @@ export const getDataFromDB = async (url: string) => {
   return data;
 };
 
-// Todo: add a logic in the server to handle the numeric values that are converter into string
 export const postToDB = async (
   url: string,
   payload: Record<string, unknown> | FormData,
@@ -50,6 +49,8 @@ export const updateDataIntoDB = async (
   url: string,
   payload?: Record<string, unknown>,
 ) => {
+  console.log(JSON.stringify(payload));
+
   let response;
 
   if (payload) {

@@ -13,7 +13,10 @@ const createUnit = catchAsync(async (req, res) => {
 });
 
 const updateUnit = catchAsync(async (req, res) => {
-  const result = await UniteServices.updateUnitIntoDB(req.params.id, req.body);
+  const result = await UniteServices.updateUnitIntoDB(
+    req.params.id,
+    req.body.unit,
+  );
 
   res.status(200).json({
     statusCode: 200,

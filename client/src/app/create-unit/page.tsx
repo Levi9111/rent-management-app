@@ -8,6 +8,8 @@ import { getDataFromDB, postToDB } from '@/api';
 import { House, DollarSign, Check, Edit, CircleSlash } from 'lucide-react';
 import { Unit } from '@/interfaces/interface';
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const CreateUnit = () => {
   const { base_url } = useContextData();
@@ -97,6 +99,19 @@ const CreateUnit = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className='p-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto'>
+        {[...Array(6)].map((_, idx) => (
+          <div key={idx} className='flex flex-col gap-2'>
+            <Skeleton className='h-5 w-32' />
+            <Skeleton className='h-7 w-full' />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className='p-6 min-h-screen bg-gray-100'>
       {/* Header */}
@@ -116,52 +131,55 @@ const CreateUnit = () => {
 
       {/* Units List */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {loading ? (
-          <div className='animate-pulse bg-gray-300 h-48 w-full rounded-md'></div>
-        ) : units.length === 0 ? (
+        {units.length === 0 ? (
           <p className='text-lg text-gray-600'>No units available</p>
         ) : (
-          units.map((unit) => (
-            <div
-              key={unit._id}
-              className='bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200'
-            >
-              <div className='p-6'>
-                <h3 className='text-2xl font-semibold text-gray-800 flex items-center'>
-                  <House className='mr-2 text-gray-500' size={24} />
-                  {unit.name}
-                </h3>
-                <p className='text-gray-600 mt-2 flex items-center'>
-                  <DollarSign className='mr-2 text-green-500' size={20} />
-                  Monthly Rent: <strong>{unit.monthlyRent} BDT</strong>
-                </p>
-                <p className='text-gray-600 flex items-center'>
-                  <DollarSign className='mr-2 text-yellow-500' size={20} />
-                  Gas Bill: <strong>{unit.gasBill} BDT</strong>
-                </p>
-                <p className='text-gray-600 flex items-center'>
-                  <DollarSign className='mr-2 text-blue-500' size={20} />
-                  Water Bill: <strong>{unit.waterBill} BDT</strong>
-                </p>
-                <p className='text-gray-600 flex items-center'>
-                  <DollarSign className='mr-2 text-gray-500' size={20} />
-                  Other Charges: <strong>{unit.others} BDT</strong>
-                </p>
-                <div
-                  className={`mt-4 p-2 rounded-md text-white flex items-center justify-start gap-3 ${
-                    unit.occupied ? 'bg-green-500' : 'bg-red-500'
-                  }`}
-                >
-                  {unit.occupied ? (
-                    <Check className='mr-2' size={16} />
-                  ) : (
-                    <CircleSlash className='mr-2' size={16} />
-                  )}
-                  {unit.occupied ? 'Occupied' : 'Available'}
+          units
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((unit) => (
+              <Link
+                href={`/create-unit/${unit._id}`}
+                key={unit._id}
+                className='cursor-pointer'
+              >
+                <div className='bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:bg-gray-100 transition duration-150'>
+                  <div className='p-6'>
+                    <h3 className='text-2xl font-semibold text-gray-800 flex items-center'>
+                      <House className='mr-2 text-gray-500' size={24} />
+                      {unit.name}
+                    </h3>
+                    <p className='text-gray-600 mt-2 flex items-center'>
+                      <DollarSign className='mr-2 text-green-500' size={20} />
+                      Monthly Rent: <strong>{unit.monthlyRent} BDT</strong>
+                    </p>
+                    <p className='text-gray-600 flex items-center'>
+                      <DollarSign className='mr-2 text-yellow-500' size={20} />
+                      Gas Bill: <strong>{unit.gasBill} BDT</strong>
+                    </p>
+                    <p className='text-gray-600 flex items-center'>
+                      <DollarSign className='mr-2 text-blue-500' size={20} />
+                      Water Bill: <strong>{unit.waterBill} BDT</strong>
+                    </p>
+                    <p className='text-gray-600 flex items-center'>
+                      <DollarSign className='mr-2 text-gray-500' size={20} />
+                      Other Charges: <strong>{unit.others} BDT</strong>
+                    </p>
+                    <div
+                      className={`mt-4 p-2 rounded-md text-white flex items-center justify-start gap-3 ${
+                        unit.occupied ? 'bg-green-500' : 'bg-red-500'
+                      }`}
+                    >
+                      {unit.occupied ? (
+                        <Check className='mr-2' size={16} />
+                      ) : (
+                        <CircleSlash className='mr-2' size={16} />
+                      )}
+                      {unit.occupied ? 'Occupied' : 'Available'}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))
+              </Link>
+            ))
         )}
       </div>
 

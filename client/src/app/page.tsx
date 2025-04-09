@@ -15,7 +15,7 @@ import html2canvas from 'html2canvas-pro';
 import { cn } from '@/lib/utils';
 import { useContextData } from '@/ContextProvider/Provider';
 
-import Receipt from '@/Components/Receipt';
+import Receipt from '@/CustomComponents/Receipt';
 
 const Home = () => {
   const { isMobileSidebarOpen } = useContextData();

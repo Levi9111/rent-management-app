@@ -4,10 +4,21 @@ const createUnitValidationSchema = z.object({
   body: z.object({
     unit: z.object({
       name: z.string().min(1, 'Name is required'),
-      monthlyRent: z.number().min(0, 'Monthly Rent must be a positive number'),
-      gasBill: z.number().min(0, 'Gas Bill must be a positive number'),
-      waterBill: z.number().min(0, 'Water Bill must be a positive number'),
-      others: z.number().min(0, 'Others must be a positive number').optional(),
+      monthlyRent: z.string().refine((value) => !isNaN(Number(value)), {
+        message: 'Monthly Rent must be a number',
+      }),
+      gasBill: z.string().refine((value) => !isNaN(Number(value)), {
+        message: 'Gas Bill must be a number',
+      }),
+      waterBill: z.string().refine((value) => !isNaN(Number(value)), {
+        message: 'Water Bill must be a number',
+      }),
+      others: z
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Others must be a number',
+        })
+        .optional(),
     }),
   }),
 });
@@ -17,18 +28,30 @@ const updateUnitValidationSchema = z.object({
     unit: z.object({
       name: z.string().optional(),
       monthlyRent: z
-        .number()
-        .min(0, 'Monthly Rent must be a positive number')
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Monthly Rent must be a number',
+        })
         .optional(),
       gasBill: z
-        .number()
-        .min(0, 'Gas Bill must be a positive number')
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Gas Bill must be a number',
+        })
         .optional(),
       waterBill: z
-        .number()
-        .min(0, 'Water Bill must be a positive number')
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Water Bill must be a number',
+        })
         .optional(),
-      others: z.number().min(0, 'Others must be a positive number').optional(),
+
+      others: z
+        .string()
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Others must be a number',
+        })
+        .optional(),
     }),
   }),
 });

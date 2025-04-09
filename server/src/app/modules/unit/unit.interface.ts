@@ -5,4 +5,5 @@ export interface TUnit {
   waterBill: number;
   others: number;
   occupied: boolean;
+  [key: string]: unknown;
 }

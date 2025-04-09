@@ -1,15 +1,29 @@
+import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
+import AppError from '../../Errors/AppError';
+import { parseNumberStrings } from '../../helpers/parseNumberStrings';
 import { TUnit } from './unit.interface';
 import Unit from './unit.model';
 
 const createUnitIntoDB = async (payload: TUnit) => {
-  const result = await Unit.create(payload);
+  const processedPayload = parseNumberStrings(payload);
+
+  const existingUnit = await Unit.findOne({
+    unit: processedPayload.unit,
+  });
+  if (existingUnit) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'This Unit already exists');
+  }
+
+  const result = await Unit.create(processedPayload);
 
   return result;
 };
 
 const updateUnitIntoDB = async (id: string, payload: Partial<TUnit>) => {
-  const result = await Unit.findOneAndUpdate({ _id: id }, payload, {
+  const processedPayload = parseNumberStrings(payload);
+
+  const result = await Unit.findOneAndUpdate({ _id: id }, processedPayload, {
     new: true,
     runValidators: true,
   });

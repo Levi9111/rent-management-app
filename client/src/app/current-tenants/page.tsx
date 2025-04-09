@@ -29,7 +29,7 @@ type TTenant = {
 const CurrentTenants = () => {
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [units, setUnits] = useState<Unit[]>([]); // List of available units
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState(false); // For opening the modal
   const [newTenant, setNewTenant] = useState<TTenant>({
@@ -69,6 +69,26 @@ const CurrentTenants = () => {
     fetchData();
   }, [base_url]);
 
+  if (loading) {
+    return (
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse'>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={index}
+            className='bg-white rounded-2xl shadow-lg p-5 space-y-4'
+          >
+            <div className='h-4 bg-gray-300 rounded w-1/2'></div>
+            <div className='h-3 bg-gray-300 rounded w-3/4'></div>
+            <div className='h-3 bg-gray-300 rounded w-2/3'></div>
+            <div className='h-3 bg-gray-300 rounded w-1/2'></div>
+            <div className='h-3 bg-gray-300 rounded w-2/4'></div>
+            <div className='h-3 bg-gray-300 rounded w-1/3'></div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   const handleCreateTenant = async () => {
     console.log(newTenant);
     const result = await postToDB(`${base_url}/tenant/create-tenant`, {
@@ -104,24 +124,6 @@ const CurrentTenants = () => {
         </Button>
       </div>
 
-      {/* Loading, Error, Empty States */}
-      {loading && (
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse'>
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className='bg-white rounded-2xl shadow-lg p-5 space-y-4'
-            >
-              <div className='h-4 bg-gray-300 rounded w-1/2'></div>
-              <div className='h-3 bg-gray-300 rounded w-3/4'></div>
-              <div className='h-3 bg-gray-300 rounded w-2/3'></div>
-              <div className='h-3 bg-gray-300 rounded w-1/2'></div>
-              <div className='h-3 bg-gray-300 rounded w-2/4'></div>
-              <div className='h-3 bg-gray-300 rounded w-1/3'></div>
-            </div>
-          ))}
-        </div>
-      )}
       {error && <p className='text-red-500'>{error}</p>}
       {!loading && !error && tenants.length === 0 && (
         <p className='text-gray-600'>No tenants found.</p>
