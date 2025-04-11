@@ -13,12 +13,15 @@ interface TContext {
   isMobileSidebarOpen: boolean;
   receiptRef: RefObject<HTMLDivElement | null>;
   setIsMobileSidebarOpen: (isMobileSidebarOpen: boolean) => void;
+  showReceipt: boolean;
+  setShowReceipt: (showReceipt: boolean) => void;
 }
 
 const Context = createContext<TContext | undefined>(undefined);
 export const Provider = ({ children }: { children: ReactNode }) => {
   const receiptRef = useRef<HTMLDivElement>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
   const base_url = process.env.NEXT_PUBLIC_BASE_URL!;
 
   return (
@@ -28,6 +31,8 @@ export const Provider = ({ children }: { children: ReactNode }) => {
         setIsMobileSidebarOpen,
         isMobileSidebarOpen,
         receiptRef,
+        showReceipt,
+        setShowReceipt,
       }}
     >
       {children}

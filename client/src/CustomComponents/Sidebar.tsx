@@ -49,8 +49,8 @@ const Sidebar = () => {
         'hidden lg:flex',
         isSidebarOpen ? 'w-64' : 'w-16',
         isMobileSidebarOpen
-          ? 'fixed top-14 left-0 h-full flex '
-          : 'fixed top-14 -left-64 md:left-0 h-full flex ',
+          ? 'fixed md:static top-14 left-0 h-full md:min-h-screen flex '
+          : 'fixed md:static top-14 -left-64 md:left-0 h-full md:min-h-screen flex ',
       )}
     >
       <button

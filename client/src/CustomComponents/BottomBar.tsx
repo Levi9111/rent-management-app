@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 const BottomBar = () => {
   return (
-    <div className='fixed bottom-0 left-0 w-full bg-blue-600 text-white shadow-md z-50 flex justify-around items-center h-14 lg:hidden'>
+    <div className='fixed bottom-0 left-0 w-full bg-blue-600 text-white shadow-md z-50 flex justify-around items-center h-14 md:hidden'>
       <Link
         href='/dashboard'
         className='flex flex-col items-center justify-center hover:text-blue-200'
