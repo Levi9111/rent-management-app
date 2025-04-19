@@ -86,7 +86,6 @@ const UnitDetails = () => {
         `${base_url}/unit/update-unit/${id}`,
         { unit: updatedData },
       );
-      console.log(result);
       if (result.success) {
         toast.success('Unit updated successfully!');
         setIsModalOpen(false);

@@ -73,7 +73,6 @@ const CreateUnit = () => {
     waterBill: number;
     others?: number;
   }) => {
-    console.log(data);
     const result = await postToDB(`${base_url}/unit/create-unit`, {
       unit: data,
     });

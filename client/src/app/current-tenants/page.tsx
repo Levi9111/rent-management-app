@@ -90,11 +90,9 @@ const CurrentTenants = () => {
   }
 
   const handleCreateTenant = async () => {
-    console.log(newTenant);
     const result = await postToDB(`${base_url}/tenant/create-tenant`, {
       tenant: newTenant,
     });
-    console.log(result);
     if (result?.success) {
       toast.success('Tenant created successfully');
       setTenants([...tenants, result.data]); // Add new tenant to the list

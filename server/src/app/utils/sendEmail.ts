@@ -21,8 +21,6 @@ export const sendEmail = async (to: string, attachments: EmailAttachment[]) => {
     },
   });
 
-  console.log('Sending Receipt 2');
-
   const html = `
   <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
     <p>Assalamu alaikum.</p>
@@ -39,8 +37,6 @@ export const sendEmail = async (to: string, attachments: EmailAttachment[]) => {
     </p>
   </div>`;
 
-  console.log('Sending Receipt 3');
-
   await transporter.sendMail({
     from: config.app_email,
     to,
@@ -48,6 +44,4 @@ export const sendEmail = async (to: string, attachments: EmailAttachment[]) => {
     html,
     attachments: attachments,
   });
-
-  console.log('Sending Receipt 4');
 };

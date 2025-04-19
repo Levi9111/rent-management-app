@@ -1,6 +1,14 @@
 'use client';
 import { useState } from 'react';
-import { Menu, Plus, Trash2, Download, Send, Settings } from 'lucide-react';
+import {
+  Menu,
+  Plus,
+  Trash2,
+  Download,
+  Send,
+  Settings,
+  Loader,
+} from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 
@@ -15,74 +23,53 @@ const Sidebar = () => {
   const { receiptRef, base_url } = useContextData();
   const { isMobileSidebarOpen } = useContextData();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [loadingSendEmail, setLoadingSendEmail] = useState(false);
   const params = useParams();
+
+  const generatePDF = async (element: HTMLDivElement, scale = 2) => {
+    const originalBackground = element.style.background;
+    element.style.background = '#ffffff';
+
+    const canvas = await html2canvas(element, {
+      scale,
+      logging: true,
+      backgroundColor: '#ffffff',
+    });
+
+    element.style.background = originalBackground;
+
+    const imgData = canvas.toDataURL('image/png', 1.0);
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const imgWidth = pageWidth - 2 * margin;
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    if (imgHeight > pageHeight - 2 * margin) {
+      imgHeight = pageHeight - 2 * margin;
+    }
+
+    pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+
+    return pdf;
+  };
 
   const handleDownloadPDF = async () => {
     if (receiptRef.current) {
-      const originalBackground = receiptRef.current.style.background;
-      receiptRef.current.style.background = '#ffffff';
-
-      const canvas = await html2canvas(receiptRef.current, {
-        scale: 3,
-        logging: true,
-        backgroundColor: '#ffffff',
-      });
-
-      receiptRef.current.style.background = originalBackground;
-
-      const imgData = canvas.toDataURL('image/png', 1.0);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth(); // ~210mm
-      const pageHeight = pdf.internal.pageSize.getHeight(); // ~297mm
-
-      const margin = 10; // margin from edges
-      const imgWidth = pageWidth - 2 * margin;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      // If image height is bigger than page height minus margins, scale it down
-      if (imgHeight > pageHeight - 2 * margin) {
-        imgHeight = pageHeight - 2 * margin;
-      }
-
-      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+      const pdf = await generatePDF(receiptRef.current, 3);
       pdf.save('receipt.pdf');
     }
   };
 
   const handleSendReceiptToTenant = async () => {
-    // Create a Receipt doc in the database on successfull submission
-
+    setLoadingSendEmail(true);
     if (receiptRef.current) {
-      const originalBackground = receiptRef.current.style.background;
-      receiptRef.current.style.background = '#ffffff';
-
-      const canvas = await html2canvas(receiptRef.current, {
-        scale: 2,
-        logging: true,
-        backgroundColor: '#ffffff',
-      });
-
-      receiptRef.current.style.background = originalBackground;
-
-      const imgData = canvas.toDataURL('image/png', 1.0);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth(); // ~210mm
-      const pageHeight = pdf.internal.pageSize.getHeight(); // ~297mm
-
-      const margin = 10; // margin from edges
-      const imgWidth = pageWidth - 2 * margin;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      // If image height is bigger than page height minus margins, scale it down
-      if (imgHeight > pageHeight - 2 * margin) {
-        imgHeight = pageHeight - 2 * margin;
-      }
-
-      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-
+      const pdf = await generatePDF(receiptRef.current, 2);
       const pdfBlob = pdf.output('blob');
       const formData = new FormData();
       formData.append('file', pdfBlob, 'receipt.pdf');
+
       if (typeof params.id === 'string') {
         formData.append('tenantId', params.id);
       } else {
@@ -96,15 +83,14 @@ const Sidebar = () => {
           formData,
         );
 
-        console.log(result);
-
         if (result.success) {
           toast.success(result.message);
+          setLoadingSendEmail(false);
         }
       } catch (error) {
-        console.log('Error');
-        console.log(error);
-        toast.error(`Something went wrong!!`);
+        console.error(error);
+        toast.error('Something went wrong!!');
+        setLoadingSendEmail(false);
       }
     }
   };
@@ -171,12 +157,20 @@ const Sidebar = () => {
             {isSidebarOpen && <span className='ml-2'>Download PDF</span>}
           </button>
           <button
-            className='bg-blue-700 p-2 rounded flex items-center gap-2 hover:bg-blue-800 cursor-pointer'
+            className={cn(
+              'bg-blue-700 p-2 rounded flex items-center gap-2',
+              !loadingSendEmail && 'hover:bg-blue-800 cursor-pointer',
+            )}
             title='Send to Tenant'
             onClick={handleSendReceiptToTenant}
+            disabled={loadingSendEmail}
           >
             <Send size={16} />
-            {isSidebarOpen && <span className='ml-2'>Send to Tenant</span>}
+            {loadingSendEmail ? (
+              <Loader className='animate-spin ml-2' />
+            ) : (
+              isSidebarOpen && <span className='ml-2'>Send to Tenant</span>
+            )}
           </button>
           <Link
             href='/admin-control'

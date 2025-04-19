@@ -25,17 +25,14 @@ const sendReceiptToTenant = async (req: Request) => {
     );
   }
 
-  const receipt = await sendEmail(tenantInfo.email, [
+  // sending email to the tenant
+  await sendEmail(tenantInfo.email, [
     {
       filename: `receipt.pdf`,
       path: req.file.path,
       contentType: 'application/pdf',
     },
   ]);
-
-  console.log('Receipt sent');
-  console.log(receipt);
-  console.log(tenantInfo.email);
 
   fs.unlinkSync(req.file.path);
 };

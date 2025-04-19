@@ -39,7 +39,6 @@ export const postToDB = async (
         : { 'Content-Type': 'application/json' },
   });
 
-  console.log(body);
   const result = await response.json();
 
   return result;

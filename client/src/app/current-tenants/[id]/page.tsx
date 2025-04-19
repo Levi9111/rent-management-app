@@ -53,7 +53,6 @@ const TenantDetails = () => {
       },
     );
     setLoading(false);
-    console.log(result);
     if (result?.success) {
       toast.success(result.message);
       router.push('/current-tenants');

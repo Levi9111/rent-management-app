@@ -75,7 +75,6 @@ const NewReceipt = () => {
       totalPaid: data.totalPaid,
       paymentMethod: data.rentPaymentMethod,
     };
-    console.log(receiptData);
     localStorage.setItem('receiptInfo', JSON.stringify(receiptData));
     router.push(`/new-receipt/${activeTenantId}`);
   };

@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Receipt = () => {
+  // TODO: add a signature image of the owner
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const { receiptRef, base_url } = useContextData();
   const [receiptInfo, setReceiptInfo] = useState<{
