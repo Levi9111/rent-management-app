@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className='flex flex-col min-h-screen bg-gray-200 '>
-      <div className='flex '>
+      <div className='md:grid md:grid-cols-[max-content_1fr]'>
         {/* Sidebar */}
         <Sidebar />
         {/* Main Content */}

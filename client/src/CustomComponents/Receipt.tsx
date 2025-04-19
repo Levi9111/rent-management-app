@@ -162,13 +162,13 @@ const Receipt = () => {
       </div>
 
       {/* Signature */}
-      <div className='flex justify-between items-center mt-6'>
+      <div className='flex justify-between items-center mt-6 gap-8'>
         <div>
-          <p>________________________</p>
+          <p>-----------------------</p>
           <p className='text-sm'>Owner Signature</p>
         </div>
         <div>
-          <p>________________________</p>
+          <p>-----------------------</p>
           <p className='text-sm'>Tenant Signature</p>
         </div>
       </div>

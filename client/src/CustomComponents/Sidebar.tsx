@@ -1,26 +1,49 @@
 'use client';
 import { useState } from 'react';
-import {
-  Menu,
-  Plus,
-  Edit,
-  Trash2,
-  Download,
-  Send,
-  Settings,
-} from 'lucide-react';
+import { Menu, Plus, Trash2, Download, Send, Settings } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 
 import { cn } from '@/lib/utils';
 import { useContextData } from '@/ContextProvider/Provider';
 import Link from 'next/link';
+import { postToDB } from '@/api';
+import { toast } from 'sonner';
+import { useParams } from 'next/navigation';
 
 const Sidebar = () => {
   const { receiptRef } = useContextData();
   const { isMobileSidebarOpen } = useContextData();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const params = useParams();
+
   const handleDownloadPDF = async () => {
+    if (receiptRef.current) {
+      const originalBackground = receiptRef.current.style.background;
+      receiptRef.current.style.background = '#ffffff';
+
+      const canvas = await html2canvas(receiptRef.current, {
+        scale: 3,
+        logging: true,
+        backgroundColor: '#ffffff',
+      });
+
+      receiptRef.current.style.background = originalBackground;
+
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 190;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      pdf.save('receipt.pdf');
+    }
+  };
+
+  const handleSendReceiptToTenant = async () => {
+    // Create a Receipt doc in the database on successfull submission
+
+    console.log(receiptRef.current);
     if (receiptRef.current) {
       const originalBackground = receiptRef.current.style.background;
       receiptRef.current.style.background = '#ffffff';
@@ -39,9 +62,31 @@ const Sidebar = () => {
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-      pdf.save('receipt.pdf');
+
+      const pdfBlob = pdf.output('blob');
+      const formData = new FormData();
+      formData.append('file', pdfBlob, 'receipt.pdf');
+      if (typeof params.id === 'string') {
+        formData.append('tenantId', params.id);
+      } else {
+        toast.error('Invalid Tenant ID!');
+        return;
+      }
+
+      try {
+        const result = await postToDB(``, {
+          pdf: formData,
+        });
+
+        if (result.success) {
+          toast.success('Pdf sent to tenant successfully');
+        }
+      } catch {
+        toast.error(`Something went wrong!!`);
+      }
     }
   };
+
   return (
     <div
       className={cn(
@@ -77,14 +122,17 @@ const Sidebar = () => {
             <Plus size={16} />
             {isSidebarOpen && <span className='ml-2'>New Receipt</span>}
           </Link>
-          <Link
+
+          {/* TODO: here will be a logic if it is clicked it will take to the new-receipt page with the modal open with the informations of the previous tenant receipt */}
+
+          {/* <Link
             href='/edit-receipt'
             className='bg-blue-700 p-2 rounded flex items-center gap-2 hover:bg-blue-800 cursor-pointer'
             title='Edit Receipt'
           >
             <Edit size={16} />
             {isSidebarOpen && <span className='ml-2'>Edit Receipt</span>}
-          </Link>
+          </Link> */}
           <button
             className='bg-blue-700 p-2 rounded flex items-center gap-2 hover:bg-blue-800 cursor-pointer'
             title='Delete Receipt'
@@ -103,6 +151,7 @@ const Sidebar = () => {
           <button
             className='bg-blue-700 p-2 rounded flex items-center gap-2 hover:bg-blue-800 cursor-pointer'
             title='Send to Tenant'
+            onClick={handleSendReceiptToTenant}
           >
             <Send size={16} />
             {isSidebarOpen && <span className='ml-2'>Send to Tenant</span>}
