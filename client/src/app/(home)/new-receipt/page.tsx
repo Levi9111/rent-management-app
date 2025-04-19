@@ -6,8 +6,8 @@ import { CustomModal } from '@/CustomComponents/Modal';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
+import Loader from '@/CustomComponents/Loader';
 
 interface RentedUnit {
   name: string;
@@ -80,7 +80,7 @@ const NewReceipt = () => {
     router.push(`/new-receipt/${activeTenantId}`);
   };
 
-  if (loading) return <Skeleton />;
+  if (loading) return <Loader />;
 
   return (
     <div className='max-w-6xl mx-auto p-4 '>

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { UnitRoutes } from '../modules/unit/unit.route';
 import { TenantRoutes } from '../modules/tenent/tenant.route';
+import { ReceiptRoutes } from '../modules/receipt/receipt.route';
 
 const router = Router();
 
@@ -12,6 +13,10 @@ const moduleRoutes = [
   {
     path: '/tenant',
     route: TenantRoutes,
+  },
+  {
+    path: '/receipt',
+    route: ReceiptRoutes,
   },
 ];
 

@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 
 const Sidebar = () => {
-  const { receiptRef } = useContextData();
+  const { receiptRef, base_url } = useContextData();
   const { isMobileSidebarOpen } = useContextData();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const params = useParams();
@@ -32,10 +32,19 @@ const Sidebar = () => {
 
       const imgData = canvas.toDataURL('image/png', 1.0);
       const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pageWidth = pdf.internal.pageSize.getWidth(); // ~210mm
+      const pageHeight = pdf.internal.pageSize.getHeight(); // ~297mm
 
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      const margin = 10; // margin from edges
+      const imgWidth = pageWidth - 2 * margin;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      // If image height is bigger than page height minus margins, scale it down
+      if (imgHeight > pageHeight - 2 * margin) {
+        imgHeight = pageHeight - 2 * margin;
+      }
+
+      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
       pdf.save('receipt.pdf');
     }
   };
@@ -43,7 +52,6 @@ const Sidebar = () => {
   const handleSendReceiptToTenant = async () => {
     // Create a Receipt doc in the database on successfull submission
 
-    console.log(receiptRef.current);
     if (receiptRef.current) {
       const originalBackground = receiptRef.current.style.background;
       receiptRef.current.style.background = '#ffffff';
@@ -58,10 +66,19 @@ const Sidebar = () => {
 
       const imgData = canvas.toDataURL('image/png', 1.0);
       const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pageWidth = pdf.internal.pageSize.getWidth(); // ~210mm
+      const pageHeight = pdf.internal.pageSize.getHeight(); // ~297mm
 
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      const margin = 10; // margin from edges
+      const imgWidth = pageWidth - 2 * margin;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      // If image height is bigger than page height minus margins, scale it down
+      if (imgHeight > pageHeight - 2 * margin) {
+        imgHeight = pageHeight - 2 * margin;
+      }
+
+      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
 
       const pdfBlob = pdf.output('blob');
       const formData = new FormData();
@@ -74,14 +91,19 @@ const Sidebar = () => {
       }
 
       try {
-        const result = await postToDB(``, {
-          pdf: formData,
-        });
+        const result = await postToDB(
+          `${base_url}/receipt/send-receipt-to-tenant`,
+          formData,
+        );
+
+        console.log(result);
 
         if (result.success) {
-          toast.success('Pdf sent to tenant successfully');
+          toast.success(result.message);
         }
-      } catch {
+      } catch (error) {
+        console.log('Error');
+        console.log(error);
         toast.error(`Something went wrong!!`);
       }
     }
