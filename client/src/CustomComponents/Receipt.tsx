@@ -2,15 +2,15 @@
 
 import { getDataFromDB } from '@/api';
 import { useContextData } from '@/ContextProvider/Provider';
-import { Tenant } from '@/interfaces/interface';
+import { BasicInfo, Tenant } from '@/interfaces/interface';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 
 const Receipt = () => {
-  // TODO: add a signature image of the owner
   const [tenant, setTenant] = useState<Tenant | null>(null);
-  const { receiptRef, base_url } = useContextData();
+  const { receiptRef, base_url, basicInfo } = useContextData();
   const [receiptInfo, setReceiptInfo] = useState<{
     tenantId: string;
     totalPaid: number;
@@ -43,11 +43,10 @@ const Receipt = () => {
     return <Skeleton />;
   }
 
-  // Variables (fetching from tenant state)
-  const ownerName = 'Alaul Hossein Md. Sharif';
-  const ownerAddress = '187/5/B/1, Matikata, Dewan Para';
-  const ownerPhone = '01976-084208';
+  const { ownerName, streetAddress, phoneNumber, ownerSignatureUrl } =
+    basicInfo as BasicInfo;
 
+  // Generate a dynamic receipt no from server
   const receiptNo = `#${Math.floor(Math.random() * 10000)
     .toString()
     .padStart(5, '0')}`; // Generate a random receipt number
@@ -79,14 +78,14 @@ const Receipt = () => {
   return (
     <div
       ref={receiptRef}
-      className='max-w-xl mx-auto p-6 border rounded shadow bg-white text-gray-700'
+      className='max-w-xl mx-auto p-6 border rounded shadow bg-white text-gray-700 relative'
     >
       {/* Header */}
       <div className='text-center mb-6'>
         <h1 className='text-2xl font-bold'>Rent Receipt</h1>
         <p>Owner Name: {ownerName}</p>
-        <p>Address: {ownerAddress}</p>
-        <p className='text-sm text-gray-600'>Phone: {ownerPhone}</p>
+        <p>Address: {streetAddress}</p>
+        <p className='text-sm text-gray-600'>Phone: {phoneNumber}</p>
       </div>
 
       {/* Receipt Info */}
@@ -163,8 +162,19 @@ const Receipt = () => {
       </div>
 
       {/* Signature */}
+      <Image
+        src={ownerSignatureUrl}
+        alt='Signature'
+        width={300}
+        height={200}
+        className='w-24 absolute'
+        style={{
+          mixBlendMode: 'multiply',
+          filter: 'brightness(0) invert(0)',
+        }}
+      />
       <div className='flex justify-between items-center mt-6 gap-8'>
-        <div>
+        <div className='relative'>
           <p>-----------------------</p>
           <p className='text-sm'>Owner Signature</p>
         </div>

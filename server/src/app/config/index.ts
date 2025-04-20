@@ -11,4 +11,8 @@ export default {
   port: process.env.PORT,
   app_email: process.env.APP_EMAIL,
   app_pass: process.env.APP_PASS,
+  cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  cloudinary_api_key: process.env.CLOUDINARY_API__KEY,
+  cloudinary_api_secret: process.env.CLOUDINARY_API__SECRET,
+  remove_bg_api: process.env.REMOVE_BG_API,
 };

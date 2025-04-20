@@ -1,15 +1,20 @@
+'use client';
+
+import { useContextData } from '@/ContextProvider/Provider';
+
 const Home = () => {
+  const { basicInfo } = useContextData();
   return (
     <div className='min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-white px-4 py-12 text-center'>
       {/* Welcome Section */}
       <div className='space-y-4 mb-10'>
         <h1 className='text-4xl md:text-5xl font-bold text-blue-800'>
-          Welcome to Patwari Villa 🏡
+          Welcome to {basicInfo?.villaName} 🏡
         </h1>
         <p className='text-lg md:text-xl text-gray-700 max-w-2xl mx-auto'>
           Manage your building’s rent, tenants, and receipts easily and
           efficiently. This platform is built to simplify rent management for
-          Patwari Villa.
+          {basicInfo?.villaName}.
         </p>
       </div>
 
@@ -23,22 +28,22 @@ const Home = () => {
         </h2>
         <div className='space-y-2 text-gray-800'>
           <p>
-            <span className='font-semibold'>Name:</span> Alaul Hossein Md.
-            Sharif
+            <span className='font-semibold'>Name:</span> {basicInfo?.ownerName}
           </p>
           <p>
-            <span className='font-semibold'>Address:</span> 187/5/B/1, Matikata,
-            Dewan Para
+            <span className='font-semibold'>Address:</span>{' '}
+            {basicInfo?.streetAddress}
           </p>
           <p>
-            <span className='font-semibold'>Phone:</span> 01976-084208
+            <span className='font-semibold'>Phone:</span>{' '}
+            {basicInfo?.phoneNumber}
           </p>
         </div>
       </div>
 
       {/* Footer */}
       <p className='text-sm text-gray-500 mt-12'>
-        Patwari Villa Rent Management © {new Date().getFullYear()}
+        {basicInfo?.villaName} Rent Management © {new Date().getFullYear()}
       </p>
     </div>
   );

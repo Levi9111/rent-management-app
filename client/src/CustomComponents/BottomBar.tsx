@@ -1,8 +1,8 @@
 import {
   HistoryIcon,
   LayoutDashboard,
+  LogOut,
   PlusCircle,
-  Settings,
   Users,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -39,11 +39,10 @@ const BottomBar = () => {
         <span className='text-xs'>History</span>
       </Link>
       <Link
-        href='/settings'
+        href='/'
         className='flex flex-col items-center justify-center hover:text-blue-200'
       >
-        <Settings size={20} />
-        <span className='text-xs'>Settings</span>
+        <LogOut size={18} /> Logout
       </Link>
     </div>
   );

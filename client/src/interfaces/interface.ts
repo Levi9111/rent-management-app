@@ -24,3 +24,12 @@ export interface Unit {
   updatedAt: string;
   __v: number;
 }
+
+export interface BasicInfo {
+  _id: string;
+  ownerName: string;
+  villaName: string;
+  streetAddress: string;
+  phoneNumber: string;
+  ownerSignatureUrl: string;
+}

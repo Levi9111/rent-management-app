@@ -1,37 +1,48 @@
 'use client';
+import { postToDB } from '@/api';
+import { useContextData } from '@/ContextProvider/Provider';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 type FormData = {
-  ownerName: string;
-  villaName: string;
-  streetAddress: string;
-  phoneNumber: string;
-  ownerSignature: FileList;
+  ownerName?: string;
+  villaName?: string;
+  streetAddress?: string;
+  phoneNumber?: string;
+  ownerSignature?: FileList;
 };
 
 const Settings = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
+  const { base_url } = useContextData();
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
+    setLoading(true);
     const formData = new FormData();
-    formData.append('ownerName', data.ownerName);
-    formData.append('villaName', data.villaName);
-    formData.append('streetAddress', data.streetAddress);
-    formData.append('phoneNumber', data.phoneNumber);
-    if (data.ownerSignature && data.ownerSignature.length > 0) {
-      formData.append('ownerSignature', data.ownerSignature[0]);
+
+    if (data.ownerSignature && data.ownerSignature[0]) {
+      formData.append('file', data.ownerSignature[0]);
     }
 
-    // TODO: Replace with your API call
-    console.log('Form Data:', data);
-    alert('Settings saved successfully!');
+    formData.append('data', JSON.stringify({ settings: data }));
 
-    reset();
+    try {
+      const result = await postToDB(
+        `${base_url}/settings/manage-settings`,
+        formData,
+      );
+      console.log(result);
+      if (toast.success) {
+        toast.success(result.message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      reset();
+    }
   };
 
   return (
@@ -43,13 +54,10 @@ const Settings = () => {
           <label className='block text-sm font-medium mb-1'>Owner Name</label>
           <input
             type='text'
-            {...register('ownerName', { required: 'Owner name is required' })}
+            {...register('ownerName')}
             placeholder='John Doe'
             className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
-          {errors.ownerName && (
-            <p className='text-red-500 text-sm'>{errors.ownerName.message}</p>
-          )}
         </div>
 
         {/* Villa Name */}
@@ -57,13 +65,10 @@ const Settings = () => {
           <label className='block text-sm font-medium mb-1'>Villa Name</label>
           <input
             type='text'
-            {...register('villaName', { required: 'Villa name is required' })}
+            {...register('villaName')}
             placeholder='Patwari Villa'
             className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
-          {errors.villaName && (
-            <p className='text-red-500 text-sm'>{errors.villaName.message}</p>
-          )}
         </div>
 
         {/* Street Address */}
@@ -72,18 +77,11 @@ const Settings = () => {
             Street Address
           </label>
           <textarea
-            {...register('streetAddress', {
-              required: 'Street address is required',
-            })}
+            {...register('streetAddress')}
             placeholder='187/5/B/1, Matikata, Dewan Para'
             rows={3}
             className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
-          {errors.streetAddress && (
-            <p className='text-red-500 text-sm'>
-              {errors.streetAddress.message}
-            </p>
-          )}
         </div>
 
         {/* Phone Number */}
@@ -91,15 +89,10 @@ const Settings = () => {
           <label className='block text-sm font-medium mb-1'>Phone Number</label>
           <input
             type='tel'
-            {...register('phoneNumber', {
-              required: 'Phone number is required',
-            })}
-            placeholder='01976-084208'
+            {...register('phoneNumber')}
+            placeholder='01976084208'
             className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
-          {errors.phoneNumber && (
-            <p className='text-red-500 text-sm'>{errors.phoneNumber.message}</p>
-          )}
         </div>
 
         {/* Owner Signature */}
@@ -110,16 +103,9 @@ const Settings = () => {
           <input
             type='file'
             accept='image/*'
-            {...register('ownerSignature', {
-              required: 'Owner signature is required',
-            })}
+            {...register('ownerSignature')}
             className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
-          {errors.ownerSignature && (
-            <p className='text-red-500 text-sm'>
-              {errors.ownerSignature.message}
-            </p>
-          )}
         </div>
 
         {/* Submit Button */}
@@ -127,7 +113,7 @@ const Settings = () => {
           type='submit'
           className='w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium'
         >
-          Save Settings
+          {loading ? 'Saving...' : 'Save Settings'}
         </button>
       </form>
     </div>

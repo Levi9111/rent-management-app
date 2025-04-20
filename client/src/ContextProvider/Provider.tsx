@@ -1,4 +1,5 @@
 'use client';
+import { BasicInfo } from '@/interfaces/interface';
 import {
   createContext,
   ReactNode,
@@ -15,6 +16,8 @@ interface TContext {
   setIsMobileSidebarOpen: (isMobileSidebarOpen: boolean) => void;
   showReceipt: boolean;
   setShowReceipt: (showReceipt: boolean) => void;
+  basicInfo: BasicInfo | null;
+  setBasicInfo: (basicInfo: BasicInfo) => void;
 }
 
 const Context = createContext<TContext | undefined>(undefined);
@@ -22,6 +25,7 @@ export const Provider = ({ children }: { children: ReactNode }) => {
   const receiptRef = useRef<HTMLDivElement>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
+  const [basicInfo, setBasicInfo] = useState<BasicInfo | null>(null);
   const base_url = process.env.NEXT_PUBLIC_BASE_URL!;
 
   return (
@@ -33,6 +37,8 @@ export const Provider = ({ children }: { children: ReactNode }) => {
         receiptRef,
         showReceipt,
         setShowReceipt,
+        basicInfo,
+        setBasicInfo,
       }}
     >
       {children}

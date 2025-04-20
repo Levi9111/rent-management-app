@@ -22,7 +22,7 @@ const Loader = () => {
 
         {/* Subtext */}
         <p className='mt-8 text-gray-500 text-sm md:text-base'>
-          Please wait while we prepare your dashboard...
+          Please wait while we prepare your app...
         </p>
       </div>
 

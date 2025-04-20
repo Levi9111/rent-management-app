@@ -20,7 +20,7 @@ import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 
 const Sidebar = () => {
-  const { receiptRef, base_url } = useContextData();
+  const { receiptRef, base_url, basicInfo } = useContextData();
   const { isMobileSidebarOpen } = useContextData();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [loadingSendEmail, setLoadingSendEmail] = useState(false);
@@ -119,9 +119,9 @@ const Sidebar = () => {
       <div>
         {isSidebarOpen && (
           <>
-            <h2 className='text-lg font-bold'>Patwari Villa</h2>
-            <p className='text-sm'>187/5/B/1, Matikata, Dewan Para</p>
-            <p className='text-sm mb-6'>Phone: 01976-084208</p>
+            <h2 className='text-lg font-bold'>{basicInfo?.villaName}</h2>
+            <p className='text-sm'>{basicInfo?.streetAddress}</p>
+            <p className='text-sm mb-6'>Phone: {basicInfo?.phoneNumber}</p>
           </>
         )}
         <div className='flex flex-col gap-3'>
@@ -176,12 +176,12 @@ const Sidebar = () => {
             )}
           </button>
           <Link
-            href='/admin-control'
+            href='/settings'
             className='bg-gray-700 p-2 rounded flex items-center gap-2 hover:bg-gray-800 mt-4 cursor-pointer'
-            title='Admin Control'
+            title='Admin Settings'
           >
             <Settings size={16} />
-            {isSidebarOpen && <span className='ml-2'>Admin Control</span>}
+            {isSidebarOpen && <span className='ml-2'>Admin Settings</span>}
           </Link>
         </div>
       </div>
