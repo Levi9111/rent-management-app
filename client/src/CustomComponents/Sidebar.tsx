@@ -57,7 +57,7 @@ const Sidebar = () => {
 
   const handleDownloadPDF = async () => {
     if (receiptRef.current) {
-      const pdf = await generatePDF(receiptRef.current, 3);
+      const pdf = await generatePDF(receiptRef.current, 1.5);
       pdf.save('receipt.pdf');
     }
   };
@@ -65,7 +65,7 @@ const Sidebar = () => {
   const handleSendReceiptToTenant = async () => {
     if (receiptRef.current) {
       setLoadingSendEmail(true);
-      const pdf = await generatePDF(receiptRef.current, 2);
+      const pdf = await generatePDF(receiptRef.current, 1.5);
       const pdfBlob = pdf.output('blob');
       const formData = new FormData();
       formData.append('file', pdfBlob, 'receipt.pdf');
