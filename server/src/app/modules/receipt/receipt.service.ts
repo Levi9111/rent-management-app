@@ -6,6 +6,7 @@ import { sendEmail } from '../../utils/sendEmail';
 import fs from 'fs';
 
 const sendReceiptToTenant = async (req: Request) => {
+  console.log('Receipt service 1');
   if (!req.file) {
     throw new AppError(httpStatus.BAD_REQUEST, 'No file found!!');
   }
@@ -13,6 +14,8 @@ const sendReceiptToTenant = async (req: Request) => {
   const tenantInfo = await Tenant.findOne({
     _id: req.body.tenantId,
   });
+
+  console.log('Receipt service 2');
 
   if (!tenantInfo) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Tenant not found');
@@ -25,7 +28,13 @@ const sendReceiptToTenant = async (req: Request) => {
     );
   }
 
+  console.log('Receipt service 3');
+
   // sending email to the tenant
+
+  console.log(req.file.path);
+  console.log(req.file.buffer);
+
   await sendEmail(tenantInfo.email, [
     {
       filename: `receipt.pdf`,
