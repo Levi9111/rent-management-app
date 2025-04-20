@@ -30,6 +30,7 @@ export const postToDB = async (
   payload: Record<string, unknown> | FormData,
 ) => {
   const body = payload instanceof FormData ? payload : JSON.stringify(payload);
+
   const response = await fetch(url, {
     method: 'POST',
     body,
@@ -38,6 +39,13 @@ export const postToDB = async (
         ? undefined
         : { 'Content-Type': 'application/json' },
   });
+
+  // Todo: remove later
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Server Error:', errorText);
+    throw new Error('Failed to POST to ' + url);
+  }
 
   const result = await response.json();
 

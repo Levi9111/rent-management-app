@@ -35,6 +35,14 @@ const sendReceiptToTenant = async (req: Request) => {
   ]);
 
   fs.unlinkSync(req.file.path);
+
+  // await sendEmail(tenantInfo.email, [
+  //   {
+  //     filename: `receipt.pdf`,
+  //     content: req.file.buffer, // Buffer from memoryStorage
+  //     contentType: 'application/pdf',
+  //   },
+  // ]);
 };
 
 export const ReceiptServices = {
