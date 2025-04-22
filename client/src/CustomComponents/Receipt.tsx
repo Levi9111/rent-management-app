@@ -179,13 +179,13 @@ const Receipt = () => {
       <div className='flex flex-row justify-between items-center mt-6 gap-6 sm:gap-8'>
         <div className='relative text-center'>
           <p>
-            --------------<span className='sm:inline hidden'>---------</span>
+            ----------------<span className='sm:inline hidden'>------</span>
           </p>
           <p className='md:text-sm text-[10px]'>Owner Signature</p>
         </div>
         <div className='text-center'>
           <p>
-            --------------<span className='sm:inline hidden'>---------</span>
+            ----------------<span className='sm:inline hidden'>------</span>
           </p>
           <p className='md:text-sm text-[10px]'>Tenant Signature</p>
         </div>
