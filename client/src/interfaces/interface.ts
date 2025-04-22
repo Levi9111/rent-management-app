@@ -33,3 +33,16 @@ export interface BasicInfo {
   phoneNumber: string;
   ownerSignatureUrl: string;
 }
+
+export interface ReceiptData {
+  _id: string;
+  receiptId: string;
+  generatedReceiptDate: string;
+  rentMonth: string;
+  rentAmountPaid: number;
+  balanceDue: number;
+  unitId: Unit;
+  tenantId: Tenant;
+  paymentMethod: string;
+  totalAmount: number;
+}

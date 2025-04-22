@@ -69,13 +69,14 @@ const NewReceipt = () => {
     setIsModalOpen(false);
   };
 
-  const onSubmit = (data: ReceiptFormValues) => {
+  const onSubmit = async (data: ReceiptFormValues) => {
     const receiptData = {
       tenantId: activeTenantId,
       totalPaid: data.totalPaid,
       paymentMethod: data.rentPaymentMethod,
     };
     localStorage.setItem('receiptInfo', JSON.stringify(receiptData));
+
     router.push(`/new-receipt/${activeTenantId}`);
   };
 

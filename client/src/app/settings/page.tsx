@@ -33,7 +33,6 @@ const Settings = () => {
         `${base_url}/settings/manage-settings`,
         formData,
       );
-      console.log(result);
       if (toast.success) {
         toast.success(result.message);
       }

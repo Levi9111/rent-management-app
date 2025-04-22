@@ -2,6 +2,7 @@
 import { useContextData } from '@/ContextProvider/Provider';
 import {
   History as HistoryIcon,
+  Home,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -21,7 +22,8 @@ const Navbar = () => {
           className='cursor-pointer lg:hidden'
           onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
         />
-        <Link href='/' className='font-bold text-lg'>
+        <Link href='/' className='font-bold text-lg flex gap-3 items-start'>
+          <Home />
           {basicInfo?.villaName}
         </Link>
       </div>

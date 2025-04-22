@@ -29,7 +29,6 @@ export const postToDB = async (
   url: string,
   payload: Record<string, unknown> | FormData,
 ) => {
-  console.log(url);
   const body = payload instanceof FormData ? payload : JSON.stringify(payload);
 
   const response = await fetch(url, {
@@ -50,8 +49,6 @@ export const updateDataIntoDB = async (
   url: string,
   payload?: Record<string, unknown>,
 ) => {
-  console.log(JSON.stringify(payload));
-
   let response;
 
   if (payload) {

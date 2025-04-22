@@ -3,4 +3,16 @@
 3. show all the receipts according to months and years in a serial one after another in the dashboard.
 4. add a logic when uploading the signature img it's bg will be removed and than will be uploaded to cloudinary.
 5. Create a notes page(completely new). there will be a form for keeping all the notes from time to time with editing and deleting functionality.
-6. Add a password authentication for every new visit to the website 
+6. Add a password authentication for every new visit to the website
+
+
+
+## Generate receipt flow:
+**(Required):
+1. Receipt number.
+2. Receipt generation date.
+3. Month of the rent.
+4. Amount paid for that month
+5. Balance due.
+6. unit id.
+7. tenant id

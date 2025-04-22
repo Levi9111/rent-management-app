@@ -63,7 +63,6 @@ const Sidebar = () => {
   };
 
   const handleSendReceiptToTenant = async () => {
-    console.log(base_url);
     if (receiptRef.current) {
       setLoadingSendEmail(true);
       const pdf = await generatePDF(receiptRef.current, 1.5);
@@ -84,8 +83,6 @@ const Sidebar = () => {
           formData,
         );
 
-        console.log('Result for Email to tenant');
-        console.log(result);
         if (result.success) {
           toast.success(result.message);
           setLoadingSendEmail(false);

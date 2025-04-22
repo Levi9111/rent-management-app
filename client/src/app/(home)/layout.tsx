@@ -20,7 +20,6 @@ export default function RootLayout({
         const result = await getDataFromDB(`${base_url}/settings`);
         setBasicInfo(result.data);
         setLoading(false);
-        console.log(result.data);
       } catch (error) {
         console.error('Error fetching settings:', error);
         setLoading(false);
