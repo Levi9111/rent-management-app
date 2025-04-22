@@ -45,7 +45,6 @@ const Dashboard = () => {
     });
 
     setGroupedReceipts(grouped);
-    console.log(grouped);
   };
 
   const formatDate = (dateStr: string) => {
@@ -59,12 +58,6 @@ const Dashboard = () => {
 
   const handleGenerateReceipt = async (id: string) => {
     const result = await getDataFromDB(`${base_url}/receipt/${id}`);
-    console.log(result);
-
-    // result.data.tenantId
-    // result.data.totalAmount
-    // result.data.paymentMethod
-    console.log(result.data.tenantId);
     if (window !== undefined) {
       localStorage.setItem(
         'receiptInfo',

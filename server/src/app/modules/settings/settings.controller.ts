@@ -20,7 +20,6 @@ const manangeSettingsInfo = catchAsync(async (req, res) => {
   const settings = Settings.findOne({ _id: settingsId });
 
   if (!settings) {
-    console.log('Settings not found');
     result = await SettingsServices.createSettingsInfoIntoDB(req);
   }
   result = await SettingsServices.updateSettingsInfoIntoDB(req);

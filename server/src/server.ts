@@ -11,7 +11,7 @@ async function main() {
     } else {
       console.error('DB connection failed');
     }
-    seedAdmin();
+    await seedAdmin();
 
     app.listen(config.port, () => {
       console.info(`app listening on port ${config.port}`);
