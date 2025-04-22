@@ -28,7 +28,6 @@ const Receipt = () => {
           },
         });
 
-        console.log(result);
         if (result.success) {
           setTenant(result.data.tenantId);
           setReceiptData(result.data);
@@ -78,6 +77,7 @@ const Receipt = () => {
     month: 'long',
     day: 'numeric',
   });
+
   const amountPaid = rentAmountPaid;
 
   const noteMessage =
@@ -99,7 +99,7 @@ const Receipt = () => {
       </div>
 
       {/* Receipt Info */}
-      <div className='flex justify-between mb-4'>
+      <div className='flex flex-col sm:flex-row justify-between gap-4 mb-4'>
         <div>
           <p>
             <span className='font-semibold'>Receipt No:</span> {receiptId}
@@ -119,7 +119,7 @@ const Receipt = () => {
       </div>
 
       {/* Payment Details */}
-      <div className='border-t border-b py-4 mb-4 space-y-2'>
+      <div className='border-t border-b py-4 mb-4 space-y-2 text-sm sm:text-base'>
         <div className='flex justify-between'>
           <span>Rent for {rentMonth}:</span>
           <span>{rentAmountPaid?.toLocaleString()}</span>
@@ -161,29 +161,27 @@ const Receipt = () => {
       </div>
 
       {/* Notes */}
-      <div className='mb-4 text-sm'>
+      <div className='mb-4 text-sm sm:text-base'>
         <p>{noteMessage}</p>
         <p className='italic'>Thank you for your payment.</p>
       </div>
 
       {/* Signature */}
-      <Image
-        src={ownerSignatureUrl}
-        alt='Signature'
-        width={300}
-        height={200}
-        className='w-24 absolute'
-        style={{
-          mixBlendMode: 'multiply',
-          filter: 'brightness(0) invert(0)',
-        }}
-      />
-      <div className='flex justify-between items-center mt-6 gap-8'>
-        <div className='relative'>
+      <div className='sm:w-52 w-full absolute left-0 right-0 flex justify-center'>
+        <Image
+          src={ownerSignatureUrl}
+          alt='Signature'
+          width={300}
+          height={200}
+          className='w-24'
+        />
+      </div>
+      <div className='flex flex-col sm:flex-row justify-between items-center mt-6 gap-6 sm:gap-8'>
+        <div className='relative text-center'>
           <p>-----------------------</p>
           <p className='text-sm'>Owner Signature</p>
         </div>
-        <div>
+        <div className='text-center'>
           <p>-----------------------</p>
           <p className='text-sm'>Tenant Signature</p>
         </div>

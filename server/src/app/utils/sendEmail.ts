@@ -13,8 +13,8 @@ const currentMonth = new Date().toLocaleDateString('en-US', { month: 'long' });
 export const sendEmail = async (to: string, attachments: EmailAttachment[]) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: config.NODE_ENV === 'production',
+    port: 465,
+    secure: true,
     auth: {
       user: config.app_email,
       pass: config.app_pass,
