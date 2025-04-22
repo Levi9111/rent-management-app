@@ -7,6 +7,26 @@ import {
   UploadApiResponse,
 } from 'cloudinary';
 import config from '../config';
+import AppError from '../Errors/AppError';
+
+const removeBg = async (blob: Blob) => {
+  const formData = new FormData();
+  formData.append('image_file', blob);
+  formData.append('size', 'auto');
+
+  const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+    method: 'POST',
+    headers: {
+      'X-Api-Key': config.remove_bg_api!,
+    },
+    body: formData,
+  });
+  if (response.ok) {
+    return await response.arrayBuffer();
+  } else {
+    throw new AppError(response.status, `${response.statusText}`);
+  }
+};
 
 cloudinary.config({
   cloud_name: config.cloudinary_cloud_name,
@@ -17,20 +37,34 @@ cloudinary.config({
 const uploadToCloudinary = async (
   file: Express.Multer.File,
 ): Promise<UploadApiResponse> => {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader
-      .upload(file.path, {
-        public_id: file.originalname,
-      })
-      .then((uploadResult) => {
-        resolve(uploadResult);
-        fs.unlinkSync(file.path);
-      })
-      .catch((error: UploadApiErrorResponse) => {
-        console.error('Cloudinary Upload Error :', error);
-        reject(error);
-      });
-  });
+  try {
+    const fileBuffer = fs.readFileSync(file.path);
+    const blob = new Blob([fileBuffer]);
+
+    const removedBgArrayBuffer = await removeBg(blob);
+
+    const processedPath = file.path.replace(
+      path.extname(file.path),
+      'signature-no-bg.png',
+    );
+    fs.writeFileSync(processedPath, Buffer.from(removedBgArrayBuffer));
+
+    const uploadResult = await cloudinary.uploader.upload(processedPath, {
+      public_id: file.originalname,
+    });
+
+    fs.unlinkSync(file.path);
+    fs.unlinkSync(processedPath);
+
+    return uploadResult;
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'message' in error) {
+      const typedError = error as UploadApiErrorResponse;
+      console.error('Cloudinary Upload Error:', typedError.message);
+      throw new AppError(500, typedError.message);
+    }
+    throw error;
+  }
 };
 
 const storage = multer.diskStorage({
@@ -42,13 +76,8 @@ const storage = multer.diskStorage({
   },
 });
 
-// const storage = multer.memoryStorage();
-
 export const upload = multer({
   storage: storage,
-  limits: {
-    fileSize: 12 * 1024 * 1024,
-  },
 });
 
 export const fileUploader = {
