@@ -83,12 +83,12 @@ const NewReceipt = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className='max-w-6xl mx-auto p-4 '>
+    <div className='max-w-6xl w-full mx-auto p-4 '>
       <h1 className='text-2xl font-bold mb-6 text-center'>
         Generate Rent Receipts
       </h1>
 
-      <div className='md:overflow-x-auto overflow-x-scroll'>
+      <div className='overflow-x-auto'>
         <table className='min-w-full border border-gray-300 text-sm'>
           <thead className='bg-gray-100'>
             <tr>
@@ -126,17 +126,29 @@ const NewReceipt = () => {
 
               return (
                 <tr key={_id} className='border-t'>
-                  <td className='border px-3 py-2'>{name}</td>
-                  <td className='border px-3 py-2'>{phoneNumber}</td>
-                  <td className='border px-3 py-2'>{email}</td>
-                  <td className='border px-3 py-2'>{unitName}</td>
-                  <td className='border px-3 py-2'>{monthlyRent} BDT</td>
-                  <td className='border px-3 py-2'>{gasBill} BDT</td>
-                  <td className='border px-3 py-2'>{waterBill} BDT</td>
-                  <td className='border px-3 py-2'>{others} BDT</td>
-                  <td className='border px-3 py-2'>{advancedAmount} BDT</td>
+                  <td className='border px-3 py-2 border-gray-300'>{name}</td>
+                  <td className='border px-3 py-2 border-gray-300'>
+                    {phoneNumber}
+                  </td>
+                  <td className='border px-3 py-2 border-gray-300'>{email}</td>
+                  <td className='border px-3 py-2 border-gray-300'>
+                    {unitName}
+                  </td>
+                  <td className='border px-3 py-2 border-gray-300'>
+                    {monthlyRent}
+                  </td>
+                  <td className='border px-3 py-2 border-gray-300'>
+                    {gasBill}
+                  </td>
+                  <td className='border px-3 py-2 border-gray-300'>
+                    {waterBill}
+                  </td>
+                  <td className='border px-3 py-2 border-gray-300'>{others}</td>
+                  <td className='border px-3 py-2 border-gray-300'>
+                    {advancedAmount}
+                  </td>
 
-                  <td className='border px-3 py-2'>
+                  <td className='border px-3 py-2 border-gray-300'>
                     <button
                       onClick={() => handleOpenModal(_id)}
                       className='bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition'

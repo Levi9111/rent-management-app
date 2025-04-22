@@ -27,7 +27,7 @@ export const CustomModal = ({
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className='bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative'
+            className='bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative md:h-max h-screen md:overflow-y-auto overflow-y-scroll md:pb-0 pb-20'
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}

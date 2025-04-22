@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Notebook,
   PlusCircle,
   Users,
 } from 'lucide-react';
@@ -52,6 +53,13 @@ const Navbar = () => {
           className='flex items-center gap-1 hover:text-gray-200'
         >
           <Users size={18} /> Tenants
+        </Link>
+
+        <Link
+          href='/notes'
+          className='flex items-center gap-1 hover:text-gray-200'
+        >
+          <Notebook size={18} /> Notes
         </Link>
 
         <Link href='/' className='flex items-center gap-1 hover:text-gray-200'>
