@@ -121,8 +121,6 @@ const sendReceiptToTenant = async (req: Request) => {
     );
   }
 
-  // sending email to the tenant
-
   await sendEmail(tenantInfo.email, [
     {
       filename: `receipt.pdf`,
@@ -132,14 +130,6 @@ const sendReceiptToTenant = async (req: Request) => {
   ]);
 
   fs.unlinkSync(req.file.path);
-
-  // await sendEmail(tenantInfo.email, [
-  //   {
-  //     filename: `receipt.pdf`,
-  //     content: req.file.buffer, // Buffer from memoryStorage
-  //     contentType: 'application/pdf',
-  //   },
-  // ]);
 };
 
 export const ReceiptServices = {

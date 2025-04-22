@@ -82,7 +82,7 @@ const Sidebar = () => {
           `${base_url}/receipt/send-receipt-to-tenant`,
           formData,
         );
-
+        console.log(result);
         if (result.success) {
           toast.success(result.message);
           setLoadingSendEmail(false);

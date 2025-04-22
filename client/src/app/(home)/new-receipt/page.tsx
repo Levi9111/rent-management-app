@@ -40,6 +40,8 @@ const NewReceipt = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
+  console.log(base_url);
+
   const {
     handleSubmit,
     register,
