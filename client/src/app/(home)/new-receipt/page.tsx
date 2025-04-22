@@ -308,7 +308,7 @@ const NewReceipt = () => {
                     type='text'
                     id='paymentMethod'
                     className='w-full border px-3 py-2 rounded'
-                    placeholder='Hand Cash'
+                    placeholder='e.g. Hand Cash'
                     {...register('rentPaymentMethod', {
                       required: 'Payment method is required',
                     })}

@@ -167,25 +167,32 @@ const Receipt = () => {
       </div>
 
       {/* Signature */}
-      <div className='sm:w-52 w-full absolute left-0 right-0 flex justify-center'>
+      <div className='sm:w-52 w-42 absolute left-0 right-0 flex justify-center '>
         <Image
           src={ownerSignatureUrl}
           alt='Signature'
           width={300}
           height={200}
-          className='w-24'
+          className='sm:w-24 w-20'
         />
       </div>
-      <div className='flex flex-col sm:flex-row justify-between items-center mt-6 gap-6 sm:gap-8'>
+      <div className='flex flex-row justify-between items-center mt-6 gap-6 sm:gap-8'>
         <div className='relative text-center'>
-          <p>-----------------------</p>
-          <p className='text-sm'>Owner Signature</p>
+          <p>
+            --------------<span className='sm:inline hidden'>---------</span>
+          </p>
+          <p className='md:text-sm text-[10px]'>Owner Signature</p>
         </div>
         <div className='text-center'>
-          <p>-----------------------</p>
-          <p className='text-sm'>Tenant Signature</p>
+          <p>
+            --------------<span className='sm:inline hidden'>---------</span>
+          </p>
+          <p className='md:text-sm text-[10px]'>Tenant Signature</p>
         </div>
       </div>
+      <p className='sm:hidden block text-[12px] pt-4 font-semibold text-red-600'>
+        **Generated on mobile.
+      </p>
     </div>
   );
 };
