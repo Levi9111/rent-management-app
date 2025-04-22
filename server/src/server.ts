@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 import app from './app';
 import config from './app/config';
-
-const seedAdmin = () => {};
+import { seedAdmin } from './app/modules/admin/admin.service';
 
 async function main() {
   try {

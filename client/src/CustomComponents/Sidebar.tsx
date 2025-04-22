@@ -88,7 +88,7 @@ const Sidebar = () => {
           setLoadingSendEmail(false);
         }
       } catch (error) {
-        console.error(error);
+        console.error('Node mailer error:' + error);
         toast.error('Something went wrong!!');
         setLoadingSendEmail(false);
       }
