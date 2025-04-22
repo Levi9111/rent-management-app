@@ -2,7 +2,6 @@
 import { getDataFromDB } from '@/api';
 import { useContextData } from '@/ContextProvider/Provider';
 import Loader from '@/CustomComponents/Loader';
-import Sidebar from '@/CustomComponents/Sidebar';
 import { ReactNode, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -36,16 +35,5 @@ export default function RootLayout({
 
   if (loading) return <Loader />;
 
-  return (
-    <div className='flex flex-col min-h-screen bg-gray-200 '>
-      <div className='md:grid md:grid-cols-[max-content_1fr]'>
-        {/* Sidebar */}
-        <Sidebar />
-        {/* Main Content */}
-        <div className='flex-1 flex justify-center items-center p-6 pb-20 md:pb-6'>
-          {children}
-        </div>
-      </div>
-    </div>
-  );
+  return <>{children}</>;
 }

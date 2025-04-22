@@ -3,6 +3,7 @@ import { UnitRoutes } from '../modules/unit/unit.route';
 import { TenantRoutes } from '../modules/tenent/tenant.route';
 import { ReceiptRoutes } from '../modules/receipt/receipt.route';
 import { SettingsRoutes } from '../modules/settings/settings.route';
+import { NotesRoutes } from '../modules/notes/notes.route';
 
 const router = Router();
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: '/settings',
     route: SettingsRoutes,
+  },
+  {
+    path: '/notes',
+    route: NotesRoutes,
   },
 ];
 
