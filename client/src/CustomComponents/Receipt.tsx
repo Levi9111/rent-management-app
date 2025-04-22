@@ -173,7 +173,7 @@ const Receipt = () => {
           alt='Signature'
           width={300}
           height={200}
-          className='sm:w-24 w-20'
+          className='sm:w-24 w-20 md:relative absolute left-7 md:left-0'
         />
       </div>
       <div className='flex flex-row justify-between items-center mt-6 gap-6 sm:gap-8'>
