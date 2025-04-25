@@ -15,14 +15,7 @@ const getSettingsInfo = catchAsync(async (req, res) => {
 });
 
 const manangeSettingsInfo = catchAsync(async (req, res) => {
-  let result;
-
-  const settings = Settings.findOne({ _id: settingsId });
-
-  if (!settings) {
-    result = await SettingsServices.createSettingsInfoIntoDB(req);
-  }
-  result = await SettingsServices.updateSettingsInfoIntoDB(req);
+  const result = await SettingsServices.updateSettingsInfoIntoDB(req);
 
   res.status(200).json({
     statusCode: 200,

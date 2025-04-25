@@ -81,9 +81,7 @@ const History = () => {
             <th className='py-3 px-6 text-left'>
               <Home className='inline-block h-4 w-4 mr-1' /> Unit
             </th>
-            <th className='py-3 px-6 text-left'>
-              <Calendar className='inline-block h-4 w-4 mr-1' /> Start Date
-            </th>
+
             <th className='py-3 px-6 text-left'>
               <Calendar className='inline-block h-4 w-4 mr-1' /> End Date
             </th>
@@ -123,17 +121,7 @@ const History = () => {
                   year: 'numeric',
                 })}
               </td>
-              <td className='py-3 px-6 text-left'>
-                {tenant.rentEndDate
-                  ? new Date(tenant.rentEndDate).toLocaleDateString('en-GB', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })
-                  : isCurrent
-                  ? 'Ongoing'
-                  : 'N/A'}
-              </td>
+
               <td className='py-3 px-6 text-left'>
                 {calculateStayDuration(
                   tenant.rentStartDate,

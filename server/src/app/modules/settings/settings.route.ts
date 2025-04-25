@@ -12,6 +12,8 @@ router.post(
   '/manage-settings',
   fileUploader.upload.single('file'),
   (req: Request, _res: Response, next: NextFunction) => {
+    console.log(req.body.data);
+    console.log(req.body.file);
     req.body = JSON.parse(req.body.data);
     next();
   },

@@ -5,7 +5,7 @@ import Loader from '@/CustomComponents/Loader';
 import { ReactNode, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-export default function RootLayout({
+export default function AllRoutesLayout({
   children,
 }: Readonly<{
   children: ReactNode;

@@ -32,11 +32,17 @@ const updateSettingsInfoIntoDB = async (req: Request) => {
 
   const { settings: newSettingsData } = req.body;
 
-  for (const [key, value] of Object.entries(newSettingsData)) {
-    (settings as TSettings)[key] = value;
-  }
+  console.log('New Settings');
+  console.log(newSettingsData);
 
-  const result = await settings!.save();
+  // for (const [key, value] of Object.entries(newSettingsData)) {
+  //   (settings as TSettings)[key] = value;
+  // }
+
+  const result = await Settings.findByIdAndUpdate(settingsId, newSettingsData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
