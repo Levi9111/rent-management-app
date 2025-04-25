@@ -8,6 +8,7 @@ import {
   CalendarCheck,
   User2,
   Wallet,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getDataFromDB, postToDB } from '@/api';
@@ -51,7 +52,9 @@ const CurrentTenants = () => {
 
       if (result?.success) {
         setTenants(result.data);
-        toast.success(result.message);
+        toast.success(result.message, {
+          id: 'tenant',
+        });
       } else {
         toast.error('Failed to fetch tenants');
         setError('Failed to fetch tenants');
@@ -94,7 +97,9 @@ const CurrentTenants = () => {
       tenant: newTenant,
     });
     if (result?.success) {
-      toast.success('Tenant created successfully');
+      toast.success('Tenant created successfully', {
+        id: result.data._id,
+      });
       setTenants([...tenants, result.data]); // Add new tenant to the list
       setOpenModal(false); // Close modal after success
     } else {
@@ -128,54 +133,66 @@ const CurrentTenants = () => {
       )}
 
       {/* Tenants Grid */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {/* Tenants Grid */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
         {tenants.map((tenant) => (
-          <Link href={`/current-tenants/${tenant._id}`} key={tenant._id}>
-            <div className='bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 space-y-4 border border-gray-200'>
-              <div className='flex items-center space-x-3 text-gray-800'>
-                <User2 className='h-5 w-5 text-blue-700' />
-                <span className='font-semibold'>
-                  {tenant.name ? tenant.name : 'Unnamed Tenant'}
-                </span>
-              </div>
+          <motion.div
+            key={tenant._id}
+            className='bg-white rounded-3xl shadow-md p-6 space-y-5 border border-gray-200 relative transition-all duration-300'
+          >
+            {/* Details button */}
+            <Link href={`/current-tenants/${tenant._id}`}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 250 }}
+                className='absolute top-4 right-4 bg-blue-600 text-white text-sm font-medium px-4 py-1.5 rounded-full flex items-center gap-2 hover:bg-blue-700 shadow-md'
+              >
+                Details <ArrowRight size={16} />
+              </motion.button>
+            </Link>
 
-              <div className='flex items-center space-x-3 text-gray-600'>
-                <Phone className='h-5 w-5 text-blue-700' />
-                <span>{tenant.phoneNumber}</span>
-              </div>
-
-              <div className='flex items-center space-x-3 text-gray-600'>
-                <Mail className='h-5 w-5 text-blue-700' />
-                <span>{tenant.email}</span>
-              </div>
-
-              <div className='flex items-center space-x-3 text-gray-600'>
-                <CalendarCheck className='h-5 w-5 text-blue-700' />
-                <span>
-                  Start:{' '}
-                  {new Date(tenant.rentStartDate).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </span>
-              </div>
-
-              <div className='flex items-center space-x-3 text-gray-600'>
-                <Wallet className='h-5 w-5 text-blue-700' />
-                <span className='font-medium'>Advanced Amount:</span>
-                <p>
-                  <span className='text-xl font-bold'>৳ </span>
-                  {tenant.advancedAmount}
-                </p>
-              </div>
-
-              <div className='flex items-center space-x-3 text-gray-700'>
-                <span className='font-medium'>Status:</span>
-                <span className='capitalize'>{tenant.status}</span>
-              </div>
+            <div className='text-lg font-semibold text-gray-900 flex items-center gap-3'>
+              <User2 className='text-blue-600 w-5 h-5' />
+              {tenant.name || 'Unnamed Tenant'}
             </div>
-          </Link>
+
+            <div className='text-gray-700 flex items-center gap-3'>
+              <Phone className='text-blue-600 w-5 h-5' />
+              {tenant.phoneNumber}
+            </div>
+
+            <div className='text-gray-700 flex items-center gap-3'>
+              <Mail className='text-blue-600 w-5 h-5' />
+              {tenant.email}
+            </div>
+
+            <div className='text-gray-700 flex items-center gap-3'>
+              <CalendarCheck className='text-blue-600 w-5 h-5' />
+              <span>
+                Start:{' '}
+                {new Date(tenant.rentStartDate).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </span>
+            </div>
+
+            <div className='text-gray-700 flex items-center gap-3'>
+              <Wallet className='text-blue-600 w-5 h-5' />
+              <span className='font-medium'>Advanced:</span>
+              <span className='text-lg font-bold text-green-700'>
+                ৳ {tenant.advancedAmount}
+              </span>
+            </div>
+
+            <div className='flex items-center gap-3'>
+              <span className='text-sm font-medium text-gray-700'>Status:</span>
+              <span className='capitalize bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800'>
+                {tenant.status}
+              </span>
+            </div>
+          </motion.div>
         ))}
       </div>
 

@@ -33,6 +33,13 @@ const updateTenantIntoDB = async (id: string, payload: Partial<TTenant>) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Tenant not found');
   }
 
+  if (result.status === 'former') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Aggrement with this tenant has already ended',
+    );
+  }
+
   if (payload.status === 'former') {
     result.rentEndDate = new Date();
 

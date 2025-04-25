@@ -10,6 +10,7 @@ export interface Tenant {
   rentedUnit?: Unit;
   createdAt: string;
   updatedAt: string;
+  [key: string]: unknown;
 }
 
 export interface Unit {

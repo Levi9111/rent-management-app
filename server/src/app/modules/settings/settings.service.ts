@@ -22,9 +22,6 @@ const createSettingsInfoIntoDB = async (req: Request) => {
 };
 
 const updateSettingsInfoIntoDB = async (req: Request) => {
-  const settings = await Settings.findById(settingsId);
-
-  // Upload and replace image if new file is provided
   if (req.file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(req.file);
     req.body.settings.ownerSignatureUrl = uploadToCloudinary.secure_url;
@@ -32,17 +29,21 @@ const updateSettingsInfoIntoDB = async (req: Request) => {
 
   const { settings: newSettingsData } = req.body;
 
-  console.log('New Settings');
-  console.log(newSettingsData);
+  const cleanedData = Object.entries(newSettingsData).reduce(
+    (acc, [key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, any>,
+  );
 
-  // for (const [key, value] of Object.entries(newSettingsData)) {
-  //   (settings as TSettings)[key] = value;
-  // }
-
-  const result = await Settings.findByIdAndUpdate(settingsId, newSettingsData, {
+  const result = await Settings.findByIdAndUpdate(settingsId, cleanedData, {
     new: true,
     runValidators: true,
   });
+
   return result;
 };
 

@@ -19,7 +19,8 @@ const Dashboard = () => {
       if (result?.data) {
         groupData(result.data);
         toast.success(result.message, {
-          id: result.data._id,
+          id: 'fetch-success',
+          duration: 2000,
         });
       } else {
         toast.error(result?.message || 'Failed to fetch receipts');

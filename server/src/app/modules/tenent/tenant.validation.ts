@@ -36,10 +36,12 @@ const updateTenantValidationSchema = z.object({
     tenant: z.object({
       name: z.string().min(1, 'Name is required').optional(),
       phoneNumber: z
-        .string()
-        .regex(/^(?:\+8801|01)[3-9]\d{8}$/, {
-          message: 'Invalid phone number',
-        })
+        .preprocess(
+          (val) => String(val),
+          z.string().regex(/^(?:\+8801|01)[3-9]\d{8}$/, {
+            message: 'Invalid phone number',
+          }),
+        )
         .optional(),
       email: z.string().email().optional(),
       rentStartDate: z
@@ -61,8 +63,8 @@ const updateTenantValidationSchema = z.object({
         .refine((value) => !isNaN(Number(value)), {
           message: 'Advanced amount must be a number',
         })
-        .transform((value) => Number(value))
-        .optional(),
+        .transform((value) => Number(value)),
+
       status: z.enum(['current', 'former']).optional(),
     }),
   }),

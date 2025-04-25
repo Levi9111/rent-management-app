@@ -6,7 +6,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { Loader2, Download, StopCircle } from 'lucide-react';
+import { Loader2, Download, StopCircle, Edit } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { Tenant } from '@/interfaces/interface';
 import {
   AlertDialog,
@@ -17,6 +18,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
+import { CustomModal } from '@/CustomComponents/Modal';
 
 const TenantDetails = () => {
   const params = useParams();
@@ -24,7 +26,10 @@ const TenantDetails = () => {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const { base_url } = useContextData();
+
+  const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
     const fetchTenants = async () => {
@@ -32,6 +37,7 @@ const TenantDetails = () => {
 
       if (result?.success) {
         setTenant(result.data);
+        reset(result.data); // populate form when modal opens
         toast.success(result.message);
       } else {
         toast.error('Failed to fetch tenant details');
@@ -40,24 +46,30 @@ const TenantDetails = () => {
     };
 
     fetchTenants();
-  }, [base_url, params.id]);
+  }, [base_url, params.id, reset]);
 
-  const handleUpdate = async () => {
+  const handleEndAggrement = async () => {
+    const endAggrementStatus = { status: 'formar' };
+    handleUpdate(endAggrementStatus);
+  };
+
+  const handleUpdate = async (payload: Partial<Tenant>) => {
     setLoading(true);
+
     const result = await updateDataIntoDB(
       `${base_url}/tenant/update-tenant/${params.id}`,
-      {
-        tenant: {
-          status: 'former',
-        },
-      },
+      { tenant: payload },
     );
     setLoading(false);
     if (result?.success) {
-      toast.success(result.message);
-      router.push('/current-tenants');
+      for (const [key, value] of Object.entries(payload)) {
+        (tenant as Tenant)[key] = value;
+      }
+      toast.success(result.message, { id: 'tenant' });
+      router.refresh();
+      setOpenModal(false);
     } else {
-      toast.error('Failed to update tenant status');
+      toast.error('Failed to update tenant');
     }
   };
 
@@ -98,9 +110,77 @@ const TenantDetails = () => {
       transition={{ duration: 0.5 }}
       className='max-w-4xl mx-auto p-6'
     >
+      <CustomModal isOpen={openModal} onClose={() => setOpenModal(false)}>
+        <h2 className='text-lg font-semibold mb-4'>Update Tenant Info</h2>
+        <form
+          onSubmit={handleSubmit((data) => handleUpdate(data))}
+          className='space-y-4'
+        >
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div>
+              <label className='block text-sm font-medium'>Name</label>
+              <input
+                type='text'
+                {...register('name', { required: true })}
+                className='w-full border rounded px-3 py-2'
+              />
+            </div>
+
+            <div>
+              <label className='block text-sm font-medium'>Phone Number</label>
+              <input
+                type='text'
+                {...register('phoneNumber', { required: true })}
+                className='w-full border rounded px-3 py-2'
+              />
+            </div>
+
+            <div>
+              <label className='block text-sm font-medium'>Email</label>
+              <input
+                type='email'
+                {...register('email')}
+                className='w-full border rounded px-3 py-2'
+              />
+            </div>
+
+            <div>
+              <label className='block text-sm font-medium'>
+                Rent Start Date
+              </label>
+              <input
+                type='date'
+                {...register('rentStartDate')}
+                className='w-full border rounded px-3 py-2'
+              />
+            </div>
+
+            <div>
+              <label className='block text-sm font-medium'>
+                Advanced Amount
+              </label>
+              <input
+                type='number'
+                {...register('advancedAmount')}
+                className='w-full border rounded px-3 py-2'
+              />
+            </div>
+          </div>
+
+          <div className='flex justify-end pt-4'>
+            <button
+              type='submit'
+              className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition'
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </CustomModal>
+
       <div className='flex md:flex-row flex-col justify-between items-center mb-6'>
         <h1 className='text-2xl font-bold'>Tenant Details</h1>
-        <div className='flex space-x-2 print:hidden '>
+        <div className='flex space-x-2 print:hidden'>
           <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
               <button className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded hover:bg-red-600 transition'>
@@ -109,8 +189,7 @@ const TenantDetails = () => {
               </button>
             </AlertDialogTrigger>
 
-            {/* TODO: fix the position of this Alert content */}
-            <AlertDialogContent className='w-full max-w-md '>
+            <AlertDialogContent className='w-full max-w-md'>
               <AlertDialogTitle className='text-lg font-semibold'>
                 End Agreement
               </AlertDialogTitle>
@@ -122,16 +201,14 @@ const TenantDetails = () => {
                 </p>
               </div>
               <div className='flex justify-end space-x-4 mt-4'>
-                {/* Cancel action */}
                 <AlertDialogCancel
                   onClick={() => setOpen(false)}
                   className='text-gray-600'
                 >
                   Cancel
                 </AlertDialogCancel>
-                {/* Confirm action */}
                 <AlertDialogAction
-                  onClick={handleUpdate}
+                  onClick={handleEndAggrement}
                   className='bg-red-600 text-white hover:bg-red-700'
                 >
                   End Agreement
@@ -147,11 +224,20 @@ const TenantDetails = () => {
             <Download size={16} />
             Download
           </button>
+          <button
+            className='flex items-center gap-1 bg-blue-500 text-white px-3 py-1.5 rounded hover:bg-blue-600 transition'
+            onClick={() => {
+              reset(tenant);
+              setOpenModal(true);
+            }}
+          >
+            <Edit size={16} />
+            Edit info
+          </button>
         </div>
       </div>
 
       <div className='bg-white shadow-md rounded-lg p-6 space-y-6'>
-        {/* Personal Info */}
         <Section title='Personal Information'>
           <DetailItem label='Name' value={name || ''} />
           <DetailItem label='Phone Number' value={phoneNumber} />
@@ -159,7 +245,6 @@ const TenantDetails = () => {
           <DetailItem label='Status' value={status} />
         </Section>
 
-        {/* Rental Info */}
         <Section title='Rental Information'>
           <DetailItem
             label='Rent Start Date'
@@ -192,7 +277,6 @@ const TenantDetails = () => {
           />
         </Section>
 
-        {/* Unit Info */}
         {rentedUnit && (
           <Section title='Unit Information'>
             <DetailItem label='Unit Name' value={rentedUnit.name} />
@@ -214,7 +298,6 @@ const TenantDetails = () => {
   );
 };
 
-// Reusable Section component
 const Section = ({
   title,
   children,
@@ -228,7 +311,6 @@ const Section = ({
   </div>
 );
 
-// Reusable Detail item
 const DetailItem = ({
   label,
   value,

@@ -5,7 +5,14 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { getDataFromDB, postToDB } from '@/api';
-import { House, DollarSign, Check, Edit, CircleSlash } from 'lucide-react';
+import {
+  House,
+  DollarSign,
+  Edit,
+  XCircle,
+  CheckCircle,
+  ArrowRight,
+} from 'lucide-react';
 import { Unit } from '@/interfaces/interface';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
@@ -136,18 +143,33 @@ const CreateUnit = () => {
           units
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((unit) => (
-              <Link
-                href={`/create-unit/${unit._id}`}
+              <div
                 key={unit._id}
-                className='cursor-pointer'
+                className='relative bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-150'
               >
-                <div className='bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:bg-gray-100 transition duration-150'>
-                  <div className='p-6'>
-                    <h3 className='text-2xl font-semibold text-gray-800 flex items-center'>
-                      <House className='mr-2 text-gray-500' size={24} />
-                      {unit.name}
-                    </h3>
-                    <p className='text-gray-600 mt-2 flex items-center'>
+                {/* Details button */}
+                <Link href={`/create-unit/${unit._id}`}>
+                  <motion.button
+                    whileHover={{
+                      scale: 1.08,
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className='absolute top-3 right-3 bg-blue-500/90 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1 hover:bg-blue-600 shadow-sm'
+                  >
+                    Details
+                    <ArrowRight size={14} />
+                  </motion.button>
+                </Link>
+
+                <div className='p-6'>
+                  <h3 className='text-2xl font-semibold text-gray-800 flex items-center mb-2'>
+                    <House className='mr-2 text-gray-500' size={24} />
+                    {unit.name}
+                  </h3>
+
+                  <div className='space-y-1'>
+                    <p className='text-gray-600 flex items-center'>
                       <DollarSign className='mr-2 text-green-500' size={20} />
                       Monthly Rent: <strong>{unit.monthlyRent} BDT</strong>
                     </p>
@@ -163,21 +185,30 @@ const CreateUnit = () => {
                       <DollarSign className='mr-2 text-gray-500' size={20} />
                       Other Charges: <strong>{unit.others} BDT</strong>
                     </p>
-                    <div
-                      className={`mt-4 p-2 rounded-md text-white flex items-center justify-start gap-3 ${
-                        unit.occupied ? 'bg-green-500' : 'bg-red-500'
+                  </div>
+
+                  {/* Occupied status as a label */}
+                  <div className='mt-4'>
+                    <span
+                      className={`inline-flex items-center gap-1 text-sm font-medium px-2 py-1 rounded-full ${
+                        unit.occupied
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-green-100 text-green-700'
                       }`}
                     >
                       {unit.occupied ? (
-                        <Check className='mr-2' size={16} />
+                        <>
+                          <XCircle size={14} /> Occupied
+                        </>
                       ) : (
-                        <CircleSlash className='mr-2' size={16} />
+                        <>
+                          <CheckCircle size={14} /> Available
+                        </>
                       )}
-                      {unit.occupied ? 'Occupied' : 'Available'}
-                    </div>
+                    </span>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))
         )}
       </div>

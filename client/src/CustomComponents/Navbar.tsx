@@ -23,7 +23,7 @@ const Navbar = () => {
           className='cursor-pointer lg:hidden'
           onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
         />
-        <Link href='/' className='font-bold text-lg flex gap-3 items-start'>
+        <Link href='/' className='font-bold text-lg flex gap-3 items-center'>
           <Home />
           {basicInfo?.villaName}
         </Link>
