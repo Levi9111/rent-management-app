@@ -25,14 +25,14 @@ export default function HomeLayout({
           isSmall={true}
         >
           <div className='text-center text-sm md:text-base text-gray-700'>
-            Please click{' '}
-            <strong>
+            Please go to{' '}
+            <strong className='test-blue-600 hover:text-blue-800 transition duration-200'>
               <Link href='/new-receipt' onClick={() => setOpenModal(false)}>
                 New Receipt
               </Link>
             </strong>{' '}
-            and then <strong>Create Receipt</strong> to download or send the
-            receipt to the tenant.
+            and then click <strong>Create Receipt</strong> to download or send
+            the receipt to the tenant.
           </div>
         </CustomModal>
 
