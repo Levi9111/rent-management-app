@@ -32,6 +32,20 @@ const getSingleReceipt = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleReceiptByTenantId = catchAsync(async (req, res) => {
+  const result = await ReceiptServices.getSingleReceiptByTenantIdFromDB(
+    req.params.id,
+  );
+  console.log(req.params.id);
+  console.log(result);
+  res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: 'Receipt fetched successfully',
+    data: result,
+  });
+});
+
 const sendReceiptToTenant = catchAsync(async (req, res) => {
   await ReceiptServices.sendReceiptToTenant(req);
 
@@ -47,4 +61,5 @@ export const ReceiptController = {
   createReceipt,
   getAllReceipts,
   getSingleReceipt,
+  getSingleReceiptByTenantId,
 };

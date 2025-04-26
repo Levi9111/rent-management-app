@@ -59,9 +59,25 @@ const NewReceipt = () => {
     fetchData();
   }, [base_url]);
 
-  const handleOpenModal = (tenantId: string) => {
-    setActiveTenantId(tenantId);
-    setIsModalOpen(true);
+  const handleGenerateReceiptByModal = async (tenantId: string) => {
+    const result = await getDataFromDB(
+      `${base_url}/receipt/tenent-id/${tenantId}`,
+    );
+    if (result.success) {
+      localStorage.setItem(
+        'receiptInfo',
+        JSON.stringify({
+          tenantId: tenantId,
+          totalPaid: result.data.rentAmountPaid,
+          paymentMethod: result.data.paymentMethod,
+        }),
+      );
+
+      router.push(`/new-receipt/${tenantId}`);
+    } else {
+      setActiveTenantId(tenantId);
+      setIsModalOpen(true);
+    }
   };
 
   const handleCloseModal = () => {
@@ -150,7 +166,7 @@ const NewReceipt = () => {
 
                   <td className='border px-3 py-2 border-gray-300'>
                     <button
-                      onClick={() => handleOpenModal(_id)}
+                      onClick={() => handleGenerateReceiptByModal(_id)}
                       className='bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition'
                     >
                       Create Receipt

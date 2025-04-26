@@ -11,11 +11,12 @@ import Image from 'next/image';
 const Receipt = () => {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const { receiptRef, base_url, basicInfo } = useContextData();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [receiptData, setReceiptData] = useState<ReceiptData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const storedReceiptInfo = localStorage.getItem('receiptInfo');
       if (storedReceiptInfo) {
         const parsedReceiptInfo = JSON.parse(storedReceiptInfo);
@@ -50,7 +51,9 @@ const Receipt = () => {
     fetchData();
   }, [base_url]);
 
-  if (!receiptData || !tenant || loading) {
+  if (loading) return <Skeleton />;
+
+  if (!receiptData || !tenant) {
     return <Skeleton />;
   }
 

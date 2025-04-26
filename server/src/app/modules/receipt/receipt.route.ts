@@ -22,4 +22,6 @@ router.get('/', ReceiptController.getAllReceipts);
 
 router.get('/:id', ReceiptController.getSingleReceipt);
 
+router.get('/tenent-id/:id', ReceiptController.getSingleReceiptByTenantId);
+
 export const ReceiptRoutes = router;

@@ -101,6 +101,24 @@ const getSingleReceiptsFromDB = async (id: string) => {
   return receipt;
 };
 
+const getSingleReceiptByTenantIdFromDB = async (id: string) => {
+  const today = new Date();
+  const rentMonth = new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    year: 'numeric',
+  }).format(today);
+
+  const receipt = await Receipt.findOne({
+    tenantId: id,
+    rentMonth,
+  });
+
+  if (!receipt) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No receipt found!!');
+  }
+  return receipt;
+};
+
 const sendReceiptToTenant = async (req: Request) => {
   if (!req.file) {
     throw new AppError(httpStatus.BAD_REQUEST, 'No file found!!');
@@ -137,4 +155,5 @@ export const ReceiptServices = {
   createReceiptIntoDB,
   getAllReceiptsFromDB,
   getSingleReceiptsFromDB,
+  getSingleReceiptByTenantIdFromDB,
 };

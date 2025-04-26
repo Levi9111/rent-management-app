@@ -55,7 +55,8 @@ const TenantDetails = () => {
 
   const handleUpdate = async (payload: Partial<Tenant>) => {
     setLoading(true);
-
+    // @ts-expect-error advancedAmount is a number
+    payload.advancedAmount = payload.advancedAmount?.toString();
     const result = await updateDataIntoDB(
       `${base_url}/tenant/update-tenant/${params.id}`,
       { tenant: payload },
@@ -183,7 +184,7 @@ const TenantDetails = () => {
         <div className='flex space-x-2 print:hidden'>
           <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-              <button className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded hover:bg-red-600 transition'>
+              <button className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded hover:bg-red-600 transition md:text-base text-xs'>
                 <StopCircle size={16} />
                 End Aggrement
               </button>
@@ -219,13 +220,13 @@ const TenantDetails = () => {
 
           <button
             onClick={handleDownload}
-            className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded hover:bg-green-600 transition'
+            className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded hover:bg-green-600 transition md:text-base text-xs'
           >
             <Download size={16} />
             Download
           </button>
           <button
-            className='flex items-center gap-1 bg-blue-500 text-white px-3 py-1.5 rounded hover:bg-blue-600 transition'
+            className='flex items-center gap-1 bg-blue-500 text-white px-3 py-1.5 rounded hover:bg-blue-600 transition md:text-base text-xs'
             onClick={() => {
               reset(tenant);
               setOpenModal(true);
