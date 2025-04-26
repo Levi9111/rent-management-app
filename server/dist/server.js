@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./app/config"));
-const seedAdmin = () => { };
+const admin_service_1 = require("./app/modules/admin/admin.service");
 async function main() {
     try {
         const connection = await mongoose_1.default.connect(config_1.default.database_url);
@@ -16,7 +16,7 @@ async function main() {
         else {
             console.error('DB connection failed');
         }
-        seedAdmin();
+        await (0, admin_service_1.seedAdmin)();
         app_1.default.listen(config_1.default.port, () => {
             console.info(`app listening on port ${config_1.default.port}`);
         });

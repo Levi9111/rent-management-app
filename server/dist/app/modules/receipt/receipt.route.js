@@ -14,5 +14,6 @@ router.post('/send-receipt-to-tenant', fileUploader_1.fileUploader.upload.single
 router.post('/create-receipt', (0, validateRequest_1.default)(receipt_validation_1.ReceiptValidation.createReceiptValidationSchema), receipt_controller_1.ReceiptController.createReceipt);
 router.get('/', receipt_controller_1.ReceiptController.getAllReceipts);
 router.get('/:id', receipt_controller_1.ReceiptController.getSingleReceipt);
+router.get('/tenent-id/:id', receipt_controller_1.ReceiptController.getSingleReceiptByTenantId);
 exports.ReceiptRoutes = router;
 //# sourceMappingURL=receipt.route.js.map

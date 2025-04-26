@@ -82,6 +82,21 @@ const getSingleReceiptsFromDB = async (id) => {
     }
     return receipt;
 };
+const getSingleReceiptByTenantIdFromDB = async (id) => {
+    const today = new Date();
+    const rentMonth = new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        year: 'numeric',
+    }).format(today);
+    const receipt = await receipt_model_1.Receipt.findOne({
+        tenantId: id,
+        rentMonth,
+    });
+    if (!receipt) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'No receipt found!!');
+    }
+    return receipt;
+};
 const sendReceiptToTenant = async (req) => {
     if (!req.file) {
         throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'No file found!!');
@@ -95,7 +110,6 @@ const sendReceiptToTenant = async (req) => {
     if (tenantInfo.status === 'former') {
         throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'This tenant is no longer renting a unit!');
     }
-    // sending email to the tenant
     await (0, sendEmail_1.sendEmail)(tenantInfo.email, [
         {
             filename: `receipt.pdf`,
@@ -104,18 +118,12 @@ const sendReceiptToTenant = async (req) => {
         },
     ]);
     fs_1.default.unlinkSync(req.file.path);
-    // await sendEmail(tenantInfo.email, [
-    //   {
-    //     filename: `receipt.pdf`,
-    //     content: req.file.buffer, // Buffer from memoryStorage
-    //     contentType: 'application/pdf',
-    //   },
-    // ]);
 };
 exports.ReceiptServices = {
     sendReceiptToTenant,
     createReceiptIntoDB,
     getAllReceiptsFromDB,
     getSingleReceiptsFromDB,
+    getSingleReceiptByTenantIdFromDB,
 };
 //# sourceMappingURL=receipt.service.js.map

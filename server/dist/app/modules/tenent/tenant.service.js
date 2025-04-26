@@ -30,6 +30,9 @@ const updateTenantIntoDB = async (id, payload) => {
     if (!result) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Tenant not found');
     }
+    if (result.status === 'former') {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Aggrement with this tenant has already ended');
+    }
     if (payload.status === 'former') {
         result.rentEndDate = new Date();
         // Mark the unit as not occupied

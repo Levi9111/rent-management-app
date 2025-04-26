@@ -4,7 +4,6 @@ import {
   History as HistoryIcon,
   Home,
   LayoutDashboard,
-  LogOut,
   Menu,
   Notebook,
   PlusCircle,
@@ -60,10 +59,6 @@ const Navbar = () => {
           className='flex items-center gap-1 hover:text-gray-200'
         >
           <Notebook size={18} /> Notes
-        </Link>
-
-        <Link href='/' className='flex items-center gap-1 hover:text-gray-200'>
-          <LogOut size={18} /> Logout
         </Link>
       </div>
     </nav>

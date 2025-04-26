@@ -12,7 +12,7 @@ const unit_model_1 = __importDefault(require("./unit.model"));
 const createUnitIntoDB = async (payload) => {
     const processedPayload = (0, parseNumberStrings_1.parseNumberStrings)(payload);
     const existingUnit = await unit_model_1.default.findOne({
-        unit: processedPayload.unit,
+        name: processedPayload.name,
     });
     if (existingUnit) {
         throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'This Unit already exists');

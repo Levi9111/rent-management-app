@@ -36,10 +36,9 @@ const updateTenantValidationSchema = zod_1.z.object({
         tenant: zod_1.z.object({
             name: zod_1.z.string().min(1, 'Name is required').optional(),
             phoneNumber: zod_1.z
-                .string()
-                .regex(/^(?:\+8801|01)[3-9]\d{8}$/, {
+                .preprocess((val) => String(val), zod_1.z.string().regex(/^(?:\+8801|01)[3-9]\d{8}$/, {
                 message: 'Invalid phone number',
-            })
+            }))
                 .optional(),
             email: zod_1.z.string().email().optional(),
             rentStartDate: zod_1.z
@@ -61,8 +60,7 @@ const updateTenantValidationSchema = zod_1.z.object({
                 .refine((value) => !isNaN(Number(value)), {
                 message: 'Advanced amount must be a number',
             })
-                .transform((value) => Number(value))
-                .optional(),
+                .transform((value) => Number(value)),
             status: zod_1.z.enum(['current', 'former']).optional(),
         }),
     }),

@@ -5,6 +5,7 @@ const unit_route_1 = require("../modules/unit/unit.route");
 const tenant_route_1 = require("../modules/tenent/tenant.route");
 const receipt_route_1 = require("../modules/receipt/receipt.route");
 const settings_route_1 = require("../modules/settings/settings.route");
+const notes_route_1 = require("../modules/notes/notes.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -22,6 +23,10 @@ const moduleRoutes = [
     {
         path: '/settings',
         route: settings_route_1.SettingsRoutes,
+    },
+    {
+        path: '/notes',
+        route: notes_route_1.NotesRoutes,
     },
 ];
 moduleRoutes.forEach((route) => {

@@ -1,7 +1,6 @@
 import {
   HistoryIcon,
   LayoutDashboard,
-  LogOut,
   Notebook,
   PlusCircle,
   Users,
@@ -46,12 +45,6 @@ const BottomBar = () => {
           className='flex flex-col items-center justify-center hover:text-blue-200'
         >
           <Notebook size={18} /> Notes
-        </Link>
-        <Link
-          href='/'
-          className='flex flex-col items-center justify-center hover:text-blue-200'
-        >
-          <LogOut size={18} /> Logout
         </Link>
       </div>
     </div>

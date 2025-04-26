@@ -18,17 +18,21 @@ const createSettingsInfoIntoDB = async (req) => {
     return result;
 };
 const updateSettingsInfoIntoDB = async (req) => {
-    const settings = await settings_model_1.Settings.findById(settings_utils_1.settingsId);
-    // Upload and replace image if new file is provided
     if (req.file) {
         const uploadToCloudinary = await fileUploader_1.fileUploader.uploadToCloudinary(req.file);
         req.body.settings.ownerSignatureUrl = uploadToCloudinary.secure_url;
     }
     const { settings: newSettingsData } = req.body;
-    for (const [key, value] of Object.entries(newSettingsData)) {
-        settings[key] = value;
-    }
-    const result = await settings.save();
+    const cleanedData = Object.entries(newSettingsData).reduce((acc, [key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+            acc[key] = value;
+        }
+        return acc;
+    }, {});
+    const result = await settings_model_1.Settings.findByIdAndUpdate(settings_utils_1.settingsId, cleanedData, {
+        new: true,
+        runValidators: true,
+    });
     return result;
 };
 exports.SettingsServices = {

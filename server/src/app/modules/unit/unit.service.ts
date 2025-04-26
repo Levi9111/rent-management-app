@@ -7,9 +7,8 @@ import Unit from './unit.model';
 
 const createUnitIntoDB = async (payload: TUnit) => {
   const processedPayload = parseNumberStrings(payload);
-
   const existingUnit = await Unit.findOne({
-    unit: processedPayload.unit,
+    name: processedPayload.name,
   });
   if (existingUnit) {
     throw new AppError(httpStatus.BAD_REQUEST, 'This Unit already exists');

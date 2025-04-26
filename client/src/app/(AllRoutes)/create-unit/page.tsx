@@ -101,7 +101,7 @@ const CreateUnit = () => {
       reset();
       await fetchUnits();
     } else {
-      toast.error('Failed to create new unit');
+      toast.error(result.message);
     }
   };
 
