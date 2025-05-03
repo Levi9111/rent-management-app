@@ -26,7 +26,8 @@ const Settings = () => {
     setLoading(true);
 
     const filteredData: Partial<FormData> = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(data).filter(([key, value]) => {
         if (value instanceof FileList) return value.length > 0;
         return value !== undefined && value !== '';
       }),
