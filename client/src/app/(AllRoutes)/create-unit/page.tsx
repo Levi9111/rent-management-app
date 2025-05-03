@@ -78,11 +78,20 @@ const CreateUnit = () => {
     monthlyRent: number;
     gasBill: number;
     waterBill: number;
-    others?: number;
+    others: number;
   }) => {
+    const stringedData: Record<string, string> = {};
+
+    for (const key in data) {
+      stringedData[key as keyof typeof data] =
+        data[key as keyof typeof data].toString();
+    }
+
     const result = await postToDB(`${base_url}/unit/create-unit`, {
-      unit: data,
+      unit: stringedData,
     });
+
+    console.log(result);
 
     const fetchUnits = async () => {
       const result = await getDataFromDB(`${base_url}/unit`);
