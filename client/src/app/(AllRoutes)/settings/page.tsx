@@ -24,19 +24,28 @@ const Settings = () => {
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
+
+    const filteredData: Partial<FormData> = Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => {
+        if (value instanceof FileList) return value.length > 0;
+        return value !== undefined && value !== '';
+      }),
+    );
     const formData = new FormData();
 
-    if (data.ownerSignature && data.ownerSignature[0]) {
-      formData.append('file', data.ownerSignature[0]);
+    if (filteredData.ownerSignature && filteredData.ownerSignature[0]) {
+      formData.append('file', filteredData.ownerSignature[0]);
     }
 
-    formData.append('data', JSON.stringify({ settings: data }));
+    formData.append('data', JSON.stringify({ settings: filteredData }));
 
     try {
       const result = await postToDB(
         `${base_url}/settings/manage-settings`,
         formData,
       );
+
+      console.log(result);
       if (toast.success) {
         toast.success(result.message);
       }
