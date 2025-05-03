@@ -32,8 +32,6 @@ const getSingleReceipt = (0, catrchAsync_1.catchAsync)(async (req, res) => {
 });
 const getSingleReceiptByTenantId = (0, catrchAsync_1.catchAsync)(async (req, res) => {
     const result = await receipt_service_1.ReceiptServices.getSingleReceiptByTenantIdFromDB(req.params.id);
-    console.log(req.params.id);
-    console.log(result);
     res.status(200).json({
         statusCode: 200,
         success: true,

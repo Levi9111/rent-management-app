@@ -12,8 +12,6 @@ const settings_validation_1 = require("./settings.validation");
 const router = (0, express_1.Router)();
 router.get('/', settings_controller_1.SettingsController.getSettingsInfo);
 router.post('/manage-settings', fileUploader_1.fileUploader.upload.single('file'), (req, _res, next) => {
-    console.log(req.body.data);
-    console.log(req.body.file);
     req.body = JSON.parse(req.body.data);
     next();
 }, (0, validateRequest_1.default)(settings_validation_1.SettingsValidation.settingsValidationSchema), settings_controller_1.SettingsController.manangeSettingsInfo);

@@ -33,6 +33,10 @@ export interface BasicInfo {
   streetAddress: string;
   phoneNumber: string;
   ownerSignatureUrl: string;
+  accountNumber: string;
+  bankName: string;
+  branchName: string;
+  routingNumber: string;
 }
 
 export interface ReceiptData {

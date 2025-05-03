@@ -27,6 +27,18 @@ const settingsSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    bankName: {
+        type: String,
+    },
+    branchName: {
+        type: String,
+    },
+    accountNumber: {
+        type: String,
+    },
+    routingNumber: {
+        type: String,
+    },
 }, {
     timestamps: true,
 });

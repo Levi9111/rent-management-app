@@ -63,7 +63,6 @@ const Sidebar = ({
 
   const handleDownloadPDF = async () => {
     if (!pathName.includes('/new-receipt') && !params.id) {
-      console.log('Test');
       setOpenModal(true);
       return;
     }
@@ -75,7 +74,6 @@ const Sidebar = ({
 
   const handleSendReceiptToTenant = async () => {
     if (!pathName.includes('/new-receipt') && !params.id) {
-      console.log('Test');
       setOpenModal(true);
       return;
     }

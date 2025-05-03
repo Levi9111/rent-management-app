@@ -28,7 +28,6 @@ const Receipt = () => {
             paymentMethod: parsedReceiptInfo.paymentMethod,
           },
         });
-
         if (result.success) {
           setTenant(result.data.tenantId);
           setReceiptData(result.data);
@@ -57,8 +56,16 @@ const Receipt = () => {
     return <Skeleton />;
   }
 
-  const { ownerName, streetAddress, phoneNumber, ownerSignatureUrl } =
-    basicInfo as BasicInfo;
+  const {
+    ownerName,
+    streetAddress,
+    phoneNumber,
+    ownerSignatureUrl,
+    accountNumber,
+    bankName,
+    branchName,
+    routingNumber,
+  } = basicInfo as BasicInfo;
 
   const {
     receiptId,
@@ -168,9 +175,25 @@ const Receipt = () => {
         <p>{noteMessage}</p>
         <p className='italic'>Thank you for your payment.</p>
       </div>
+      {/* Bank Details */}
+      <div className='border rounded-md bg-gray-50 p-4 mt-4 text-sm text-gray-700'>
+        <h3 className='font-semibold mb-3 text-base text-gray-800 border-b pb-1'>
+          Bank Details for Online Payment
+        </h3>
+        <div className='grid grid-cols-2 gap-y-2 gap-x-4'>
+          <p className='font-medium'>Account Number:</p>
+          <p>{accountNumber}</p>
+          <p className='font-medium'>Bank Name:</p>
+          <p>{bankName}</p>
+          <p className='font-medium'>Branch Name:</p>
+          <p>{branchName}</p>
+          <p className='font-medium'>Routing Number:</p>
+          <p>{routingNumber}</p>
+        </div>
+      </div>
 
       {/* Signature */}
-      <div className='sm:w-52 w-42 absolute left-0 right-0 flex justify-center '>
+      <div className='sm:w-52 w-42 absolute left-0 right-0 flex justify-center mt-5'>
         <Image
           src={ownerSignatureUrl}
           alt='Signature'
@@ -179,7 +202,7 @@ const Receipt = () => {
           className='sm:w-24 w-20 md:relative absolute left-7 md:left-0'
         />
       </div>
-      <div className='flex flex-row justify-between items-center mt-6 gap-6 sm:gap-8'>
+      <div className='flex flex-row justify-between items-center mt-10 gap-6 sm:gap-8'>
         <div className='relative text-center'>
           <p>
             ----------------<span className='sm:inline hidden'>------</span>
@@ -195,6 +218,9 @@ const Receipt = () => {
       </div>
       <p className='sm:hidden block text-[12px] pt-4 font-semibold text-red-600'>
         **Generated on mobile.
+      </p>
+      <p className='hidden sm:block text-[12px] pt-4 font-semibold text-blue-600'>
+        **Generated on PC.
       </p>
     </div>
   );

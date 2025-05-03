@@ -22,7 +22,6 @@ export const seedAdmin = async () => {
     const existingAdmin = await Admin.findOne({ email: config.app_email });
 
     if (existingAdmin) {
-      console.log('✅ Admin already exists');
       return;
     }
 
