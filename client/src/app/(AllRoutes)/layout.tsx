@@ -18,6 +18,7 @@ export default function AllRoutesLayout({
       try {
         const result = await getDataFromDB(`${base_url}/settings`);
         setBasicInfo(result.data);
+        console.log(result);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching settings:', error);
